@@ -4,6 +4,11 @@ layout: home
 permalink: /
 ---
 
-# Lorem ipsum
+# Other Demo Pages
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+[Light](https://b2a3e8.github.io/jekyll-theme-console-demo-light/)
+[Hacker](https://b2a3e8.github.io/jekyll-theme-console-demo-hacker/)
+
+# Welcome
+
+Bla bla bla bla. Bla bla bla bla bla bla bla bla.

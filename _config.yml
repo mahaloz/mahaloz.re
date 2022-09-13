@@ -1,15 +1,20 @@
-# Example Site settings
+title: 'mahaloz.re'
+description: "A jekyll theme inspired by linux consoles for hackers, developers and script kiddies."
+baseurl: ""
+url: ""
 
-#google_analytics: UA-NNNNNNNN-N
+header_pages:
+  - index.md
+  - peter.md
+  - about.md
+  - contact.md
 
-#header_pages:
-#  - index.md
-#  - about.md
+style: dark
 
-#footer: 'follow us on <a href="https://twitter.com/">twitter</a>'
+footer: 'follow us on <a href="https://twitter.com/">twitter</a>'
 
-#style: light # dark (default) or light
-#listen_for_clients_preferred_style: true # true or false (default)
+# Build settings
+markdown: kramdown
 
 plugins:
-  - jekyll-seo-tag
+- jekyll-seo-tag
