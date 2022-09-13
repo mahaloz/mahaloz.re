@@ -1,7 +1,7 @@
 title: 'mahaloz.re'
 description: "A jekyll theme inspired by linux consoles for hackers, developers and script kiddies."
-baseurl: "/new.mahaloz.re"
-url: "https://mahaloz.github.io"
+baseurl: ""
+url: "https://mahaloz.github.io/new.mahaloz.re"
 
 header_pages:
   - index.md
