@@ -4,13 +4,11 @@ classes: wide
 layout: post
 tags: [ctf]
 description: "Reversing a Go binary to find it generates flawed RNG from a P256 Elliptic Curve chosen with a reversible P and Q for number generation. Solution based on the Dual EC crypto paper."
-feature_image: /assets/images/ctf/insomnia-22/pic3.png
 ---
 
 Reversing a Go binary to find it generates flawed RNG from a P256 Elliptic Curve chosen with a reversible
 P and Q for number generation. Solution based on the Dual EC crypto paper. 
 
-<!--more-->
 
 ## Introduction
 
@@ -30,7 +28,7 @@ The challenge is a single binary, [nobus101.bin](https://github.com/shellphish/w
 ## Scouting a Go Binary
 You can often tell that a binary is a Go binary just by opening it in a decompiler and seeing the naming convention:
 
-![](/assets/images/ctf/insomnia-22/pic1.png)
+![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic1.png)
 
 You will usually see something like `main_*`, which means it's a function of the package `main`. You can also use a little hack:
 
@@ -222,7 +220,7 @@ So we are led to the what the `Q` means. It is related to Eliptic Curves, and it
 
 I was curious as to what the second big number was, because I thought it might be another important value so I checked it out. The assignment happens at `0x63856D`, I decided to confirm this is a global in gdb. I connected with [decomp2gef](https://github.com/mahaloz/decomp2gef) so I could examine the decompilation directly:
 
-![](/assets/images/ctf/insomnia-22/pic2.png)
+![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic2.png)
 
 Take note of how the big_Int is stored in Go. The second qword is a pointer to the actual number
 
@@ -292,7 +290,7 @@ I originally started with 1, but I pivoted to 2 after googling around a lot and 
 ### The Paper Spark Notes
 The paper presents a way to, surprise surprise, guess the next random number in a series of given numbers when you know point `P`, `Q`, `k` and guesses before your current guess. They do this with some tricks on the choice of `P` and `Q`.
 
-![](/assets/images/ctf/insomnia-22/pic3.png)
+![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic3.png)
 
 Lucky for me, I found a script of this exact attack implementation for [UTCTF 2021](https://ctftime.org/writeup/26410). 
 
@@ -346,7 +344,7 @@ Lots of slicing into bytes to pass args, which is what `makeslice` does. The typ
 
 Where does it go? What is its actual args?
 
-![](/assets/images/ctf/insomnia-22/pic4.png)
+![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic4.png)
 
 The address points to _crypto/elliptic.p256Curve.ScalarBaseMult_, which means we are preforming the multiplacation for `Q = k*P` we talked about earlier! The code we are calling corresponds:
 
@@ -444,7 +442,7 @@ Qy = 0x07275f38738e8496bc0ade55de646372df388f04cdf6a09cf80108e0d2878ce5
 
 All I needed now was `P`, which I was not sure how I lost. I posted `Q` and `k`, and @Samuel mentioned earlier started messing with it. Then he noticed something while I was reversing:
 
-![](/assets/images/ctf/insomnia-22/pic5.png)
+![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic5.png)
 
 So `P` (the point), is actually `G`, which we know from the standard description. 
 

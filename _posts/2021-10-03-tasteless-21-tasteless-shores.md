@@ -19,7 +19,7 @@ This weekend we played Tasteless 21 and they had a great series of challenges. T
 - @lucas_baizer
 - @lbshine
 
-![](/assets/images/ctf/tasteless-21/challenges.png)
+![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/challenges.png)
 
 ## Challenge Description:
 
@@ -157,7 +157,7 @@ We changed all the `moveSpeed` to 10. We recompiled with the earlier mentioned [
 
 While we were hacking speed, we thought we should have jump hacks as well. We modified the same file. We set the `jumpForce` to `100`. This is what it looked like:
 
-![yeeet](/assets/images/ctf/tasteless-21/jump_hacks.png)
+![yeeet]({{ site.baseurl}}/assets/images/ctf/tasteless-21/jump_hacks.png)
 Me, flying hundreds of blocks from one jump.
 
 
@@ -179,7 +179,7 @@ func _physics_process(delta):
 We modified the velocity and y so that we only ever went up, so now velocity would be greater than 0. We no longer fall after jumping. 
 
 
-![yeeet](/assets/images/ctf/tasteless-21/fly_hacks.png)
+![yeeet]({{ site.baseurl}}/assets/images/ctf/tasteless-21/fly_hacks.png)
 Me, looking down on the peasants who cant fly.
 
 
@@ -267,7 +267,7 @@ func start_attack(target):
 
 So now you just punch once, it activates a fish event and spawns the chest, then you use your hacks to walk over the water and grab the flag from the chest.
 
-![flagggg](/assets/images/ctf/tasteless-21/flag_hacks.png)
+![flagggg]({{ site.baseurl}}/assets/images/ctf/tasteless-21/flag_hacks.png)
 Me, getting that flag.
 
 At this point we conclude we have the ability to send arbitrary event requests. We can request to fish by attacking. We can request to do literally anything by overriding attacking as our trigger. 
@@ -277,7 +277,7 @@ At this point we conclude we have the ability to send arbitrary event requests. 
 
 Using our knowledge of _stuff_, we realized the flag for the Skull Island is in the _eye_ (go figure). We used our fly hacks to propel/god ascend to the eye and grab the flag. We also had to make sure we kept the `FLAG_EYES` in our player `markers`. 
 
-![](/assets/images/ctf/tasteless-21/skull_island.png)
+![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/skull_island.png)
 
 
 ## TP Hacks (challenge: Conch)
@@ -311,7 +311,7 @@ func _msg_handler(msg):
 
 Now we could just use the chat to teleport:
 
-![](/assets/images/ctf/tasteless-21/tp_hacks.png)
+![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/tp_hacks.png)
 
 Now this is only useful if you actually know where you want to teleport, and lucky for us, there is a challenge which needs this functionality.
 
@@ -352,7 +352,7 @@ static func conch(distance, player):
 
 This will, on each use, get our current 3d coordinates and print the distance from our point to that point in 3d space. With this information, we can actually [triangulate](https://en.wikipedia.org/wiki/Triangulation) the 3d position to 1 point estimate just py trial and error.
 
-![](/assets/images/ctf/tasteless-21/locate_hacks.png)
+![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/locate_hacks.png)
 Lucas, locating the rabbit
 
 Getting within a single digit of the rabbit is actually not good enough. The check sees if you are within `0.1` distance of the rabbit, which means the only real way you can get that close is by teleporting to its exact location. Using a common method of finding the [intersections of spheres in a 3d space](https://math.stackexchange.com/questions/562240/how-to-find-the-intersection-of-three-spheres-full-solutions), we can get a decent point guess from just sampling three points in the 3d space. We used this [stackoverflow code](https://stackoverflow.com/questions/1406375/finding-intersection-points-between-3-spheres) to find the intersection of three spheres:
@@ -608,7 +608,7 @@ I need to give a huge shutout to both Lucas and Wil. For the majority of the gam
 
 This was a really fun challenge, and a classic example of game hacking. I did wish there was more binary related stuff, but I know its hard to dump a lot of time into making a game engine. I also wish we had more time to solve part 5 and 6 of this challenge set, since I'm sure it must have been great. We got 10th, gg. 
 
-![](/assets/images/ctf/tasteless-21/scoreboard.png)
+![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/scoreboard.png)
 
 
 

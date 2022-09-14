@@ -1,14 +1,10 @@
 ---
-title: /
+title: ~/
 layout: home
 permalink: /
 ---
 
-# Other Demo Pages
-
-[Light](https://b2a3e8.github.io/jekyll-theme-console-demo-light/)
-[Hacker](https://b2a3e8.github.io/jekyll-theme-console-demo-hacker/)
-
 # Welcome
+All things hacking from me, mahaloz. If you're looking for a specific category of posts, like ctf, take a look at the [/tags](/tags) page, otherwise you can find all posts here.
 
-Bla bla bla bla. Bla bla bla bla bla bla bla bla.
+

@@ -17,7 +17,7 @@ You can find all the challenge files, including our solve, [here](https://github
 In this challenge, Google introduced us to a new type of instruction set, which in turn allowed us to play a video game completely virtualized in the C language's `sprintf` format strings. 
 Through some reverse engineering, and IDA finagling, we created a disassembler for the sprint arch, which is the name we are declaring for this challenges [ISA](https://en.wikipedia.org/wiki/Instruction_set_architecture).
 
-![Winning!](/assets/images/solving_maze.gif)
+![Winning!]({{ site.baseurl}}/assets/images/solving_maze.gif)
 
 We break this writeup into sections:
 - [An overview](#an-overview)
@@ -374,7 +374,7 @@ Putting everything together, we wrote a python script to play the game. Clever r
 
 Our winning movements looked something like this:
 
-![Winning!](/assets/images/solving_maze.gif)
+![Winning!]({{ site.baseurl}}/assets/images/solving_maze.gif)
 
 ## Thanks where thanks is due
 This challenge was in no way a one man effort, as you can likely tell from the writing style. This challenge would not have been possible without [kylebot](http://kylebot.net/about/) on Shellphish. We struggled through the night, and he played a huge part in the chall (much more major than I). Also, shoutout to any other people who jumped in the Shellphish Discord and gave their two cents.

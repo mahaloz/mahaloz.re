@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+<main class="site-main">
+  <article class="post">
+    {{ content }} 
+    <br>
+    <div class="post-content">
+      <div class="archive-tags">
+        {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+        {% assign sortedTags = site_tags | split:',' | sort %}
+      </div><!-- .archive-tag-list -->
+      {% for tag in sortedTags %}
+        <h2 id="{{ tag | cgi_escape }}">{{ tag }}</h2>
+        <ul class="archive-post-list">
+        {% for post in site.tags[tag] %}
+          <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> <span class="archive-meta"> — <time class="archive-date" datetime="{{ post.date | date: "%Y-%m-%d" }}">{{ post.date | date: "%B %-d, %Y" }}</time></span></li>
+        {% endfor %}
+      {% endfor %}
+    </div><!-- .post-content -->
+  </article><!-- .post -->
+</main><!-- .site-main -->

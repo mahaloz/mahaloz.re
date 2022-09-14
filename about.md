@@ -1,15 +1,20 @@
 ---
 layout: page
 title: /about
-permalink: /about/
+description: Something about Zion
+tags: [] 
 ---
 
-# jekyll-theme-console
+# About
 
-A jekyll theme with inspiration from linux consoles for hackers, developers and script kiddies.
-You can find the source code for this theme at [github.com/b2a3e8/jekyll-theme-console](https://github.com/b2a3e8/jekyll-theme-console).
+Hi, I'm [Zion Leonahenahe Basque](https://zionbasque.com) a native Hawaiian hacker, better known as mahaloz. I'm the co-captain of the [ctf](https://ctftime.org/about/) team [@Shellphish](https://twitter.com/shellphish?lang=en) and the previous president of the [@asuhackingclub](http://asuhacking.club). I love reverse engineering, pwning, exploration robotics, and computers in general. I'm a PhD student in the Arizona State University [SEFCOM](https://ctftime.org/about/) research lab. My research also focuses on reverse engineering, with special regards to decompilation. My research advisors are the renowned [Dr. Fish Wang](https://ruoyuwang.me/) & [Dr. Yan Shoshitaishvili](https://www.yancomm.net/).
 
-## What is jekyll?
 
-Jekyll is a simple, blog-aware, static site generator for personal, project, or organization sites. Written in Ruby by Tom Preston-Werner, GitHub's co-founder, it is distributed under an open source license.
-<br />Instead of using databases, Jekyll takes the content, renders Markdown or Textile and Liquid templates, and produces a complete, static website ready to be served by Apache HTTP Server, Nginx or another web server. Jekyll is the engine behind GitHub Pages, a GitHub feature that allows users to host websites based on their GitHub repositories for no additional cost.
+<!-- small, centered image --> 
+<p align="center">
+  <img src="/assets/images/pixel_zion_profile.jpg" width="40%"/>
+</p>
+<!-- end non-markdown --> 
+
+
+This is my technical blog. I post all things hacking related here. If you want to learn more about me professionally, check out my professional page [@zionbasque.com](https://zionbasque.com). If you want to get a hold of me, just shoot me an email -- I'll likely invite you to the Shellphish/ASUHC discord for further communication.

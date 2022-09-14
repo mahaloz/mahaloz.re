@@ -27,7 +27,7 @@ This writeup is based on two challenges from CSAW Quals 2020, `blox1` and `blox2
 ## Overview
 We are given the source code to a [tetris](https://en.wikipedia.org/wiki/Tetris) video game that allows cheats if the right tetrominos are placed at specific board locations. If you use the cheats correctly you can cause an overflow outside of the board printed on the screen. The overflow allows a partial [write primitive](https://stackoverflow.com/questions/52827397/what-is-the-meaning-of-write-4-primitive). Upgrading the primitive with writes to the `.text` allows you to get the flag. 
 
-![](/assets/images/blox_cheats.gif)
+![]({{ site.baseurl}}/assets/images/blox_cheats.gif)
 
 As an overview I will cover:
 1. [Reversing cheat mode (brief)](#reversing)
@@ -41,7 +41,7 @@ As an overview I will cover:
 ### Recon
 So we are playing some sort of modified Tetris:
 
-![](/assets/images/blox1_ex1.png)
+![]({{ site.baseurl}}/assets/images/blox1_ex1.png)
 
 
 From the description of the challenge we know we want to turn cheats on -- though we don't know what that means yet. Taking a quick look at the game source we can see:
@@ -126,12 +126,12 @@ Using this we get something that looks like this:
 ``` 
 These are the valid positions in the last 5x12 coordinates on the board. By translating the 1's into pecies by hand (just trying the 7 tetrominos in each place), we can get a nice rendered image of what it should look like on the real board:
 
-![](/assets/images/blox_ex2.png)
+![]({{ site.baseurl}}/assets/images/blox_ex2.png)
 
 Ah yes, ret2. Now that we know what tetrominos they want in those positions, it's just a matter of getting the right blocks in the right order. Since the program initialized with the seed:
 `srand(1);` we know that each sequence of tetrominos will repeat. For us, this happened after 8 tires. We simply recorded these modes once using their builtin keylogger:
 
-![](/assets/images/blox_ex3.png)
+![]({{ site.baseurl}}/assets/images/blox_ex3.png)
 
 Finally, we used that key log in thier custom `pwntools` like interaction environment and sent over the payload to get the tetrominos into place:
 
@@ -145,7 +145,7 @@ p.interactive()
 
 Now we get that cash $$$ and end in interactive mode:
 
-![](/assets/images/blox_cheats.gif)
+![]({{ site.baseurl}}/assets/images/blox_cheats.gif)
 
 Now that we have the first flag, it's time to move on to the pwn section of this challenge. 
 
@@ -188,7 +188,7 @@ Essentially, any time a challenge implements a well known C-library function, yo
 
 After looking at this, we decided to just start messing around with the Tetris game. Recall from the last section that we turned on cheats, which gives us the ability to change the current tetromino to any shape at anytime before it is set on another block. We started messing around, by converting shapes, and got this interesting game reaction:
 
-![](/assets/images/blox_glitch.gif)
+![]({{ site.baseurl}}/assets/images/blox_glitch.gif)
 
 Notice, that last block switch changes the flat block into a square block -- which glitches off the board. What does this mean for us? We have tha ability to overflow things adjacent to the board in memory! What values end up in the place adjacent to the board? Well that depends on the shape. 
 
@@ -390,7 +390,7 @@ new_hs(skip=True)
 
 With a final solve looking something like this in the end:
 
-![](/assets/images/blox_final.gif)
+![]({{ site.baseurl}}/assets/images/blox_final.gif)
 
 
 
@@ -400,4 +400,4 @@ Like I said before, my teammates are what make this solve so successful. I could
 ## Conclusion 
 Like earlier, the challenge files and all the solve scripts can be found [here](https://github.com/mahaloz/mahaloz.re/tree/master/writeup_code/csaw-quals-20). This CTF had a lot of guessy challenges, but it also had some very well crafted pwn challenges -- like this one by [itzsn](https://github.com/itszn). Overall, I think this CTF was good **for the current times**. It's not easy to organize a CTF with death and fires on the horizon. Thank you NYUSEC. Oh yeah, and we got first overall :).
 
-![](/assets/images/blox_scoreboard.png)
+![]({{ site.baseurl}}/assets/images/blox_scoreboard.png)

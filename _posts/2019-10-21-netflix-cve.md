@@ -33,7 +33,7 @@ clear that DIAL is not purged from modern Netflix and YouTube applications.
 After a small investigation, we found that the DIAL server could still
 communicate with an iPhone--making this an interesting target. 
 
-![iPhone POC](/assets/images/research/netflix-writeup-2019/iphone-netflix-poc.jpeg)
+![iPhone POC]({{ site.baseurl}}/assets/images/research/netflix-writeup-2019/iphone-netflix-poc.jpeg)
 
 ## Recon
 Looking at the dial-reference readme, it says: "The DIAL client uses CURL to
