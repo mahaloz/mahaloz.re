@@ -1,27 +1,21 @@
 ---
 title: "Tasteless 21: Godot Game Hacking in Tasteless Shores"
-classes: wide
 layout: post
-tags: [ctf]
+tags: [ctf, reversing, game-hacking]
 feature_image: /assets/images/ctf/tasteless-21/feature_image.png
 description: "A series of game hacking challenges hosted in Tasteless 21. Decompiling, modifying, and recompiling Godot scripts to abuse client-side computations for a multiplayer game. Fly hacks, no-damage, super speed, and rng abuse."
 ---
-
-A series of game hacking challenges hosted in Tasteless 21. Decompiling, modifying, and recompiling Godot scripts to abuse client-side computations for a multiplayer game. Fly hacks, no-damage, super speed, and rng abuse.
-
-<!--more-->
-
-## Introduction
+# Introduction
 This weekend we played Tasteless 21 and they had a great series of challenges. This year they spent a painstaking amount of time making a 3D game called `Tasteless Shores`. It was big enough to be it's own category in the game, hosting a total of 6 challenges in the same game. My teammates and I completed 4/6, and it was super fun. In this writeup I'll try to mostly focus on how to do the game hacks that made solving the challenges possible. 
 
-### Collaborators:
+## Collaborators:
 - [@clasm](https://github.com/WGibbs15)
 - @lucas_baizer
 - @lbshine
 
 ![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/challenges.png)
 
-## Challenge Description:
+# Challenge Description:
 
 The entire challenge had its own page for the CTF. It had 3 files associated with it.
 The client/server game binary, and its resources:
@@ -44,7 +38,7 @@ And the "master server" that ran the game server:
 
 They also provided a different binary for each OS. They had MacOS, Windows, and Linux. You can find all files relevant to my solve in my [ctf_files](https://github.com/mahaloz/ctf_files/tree/main/ctfs/tasteless-21/tasteless-shores) on GitHub.
 
-## Overview of components
+# Overview of components
 
 At first, we were baited into analyzing the binaries provided, because we thought that the `.pck` file was just a resource pack. We spent around 2 hours looking at the binaries before we decided to actually look more into the `.pck` file, which was critical to this entire challenge set. For reference, the game binary is **HUGE**:
 
@@ -64,7 +58,7 @@ Which lead us to this link about [godot and GDScripts](https://docs.godotengine.
 
 Lastly, the other `server` binary the organizers provided was for managing multiple game servers and connection routing. Think of it as a middle-man, or [Bunjee Server](https://docs.godotengine.org/en/stable/getting_started/workflow/export/exporting_pcks.html), like in Minecraft.
 
-## Game Logic
+# Game Logic
 
 Funny enough, the rest of this challenge has nothing to do with the binaries above. The only thing that mattered for the rest of the challenges was the `.pck` file. We found a [decompiler](https://github.com/bruvzg/gdsdecomp) for GDScripts pretty fast from google. After using the decompielr feature, we had a full godot project:
 
@@ -130,11 +124,11 @@ With most game logic things in `game`:
 As you can probably guess, `server2.gd` is run on the server. `client2.gd` is run on the client (your local machine)... This means we can modify anything in client (and anything it loads that is not the `Server`).
 
 
-## Speed Hacks POC
+# Speed Hacks POC
 
 To prove we could _actually_ modify the client, we first started with a simple proof-of-concept by making speed hacks. We modified the player controller, which interfaced with game to give you movement, here:
 
-### player_conroller.gd:11
+## player_conroller.gd:11
 ```js
 var moveSpeed:float = 2.0
 var jumpForce:float = 5.0
@@ -153,7 +147,7 @@ func _ready():
 We changed all the `moveSpeed` to 10. We recompiled with the earlier mentioned [decompiler chain](https://github.com/bruvzg/gdsdecomp) This allowed us to _zoom_ around the spawn island at top speeds. It looked really hacky as we speed glitched everywhere.
 
 
-## Jump Hacks
+# Jump Hacks
 
 While we were hacking speed, we thought we should have jump hacks as well. We modified the same file. We set the `jumpForce` to `100`. This is what it looked like:
 
@@ -161,11 +155,11 @@ While we were hacking speed, we thought we should have jump hacks as well. We mo
 Me, flying hundreds of blocks from one jump.
 
 
-## Fly Hacks
+# Fly Hacks
 
 As one more fun thing, we added fly hacks (really just the lack of gravity). As is the theme, we modified the player controller:
 
-### player_controller:78
+## player_controller:78
 ```js
 func _physics_process(delta):
 	vel.x = 0
@@ -183,11 +177,11 @@ We modified the velocity and y so that we only ever went up, so now velocity wou
 Me, looking down on the peasants who cant fly.
 
 
-## Flag Hacks (challenge: Boat)
+# Flag Hacks (challenge: Boat)
 
 We decided it was time to get some flags, so we first wanted the flag from the fisherman. Looking at the code, we saw how the fisherman gave you the boat to get to the island with the flag:
 
-### boat.gd:10
+## boat.gd:10
 ```js
 func interact():
 	if "FLAG_BOAT" in Client.player.marker:
@@ -199,7 +193,7 @@ func interact():
 
 The fisher checked for the `FLAG_BOAT`, which you could only get if you caught a fish in some fishing area:
 
-### fishing_rod.gd:29
+## fishing_rod.gd:29
 ```js
 func fish():
 	Client.player_controller.paused = false
@@ -216,7 +210,7 @@ func fish():
 
 Instead, we wanted to directly modify our players flags, which was checked in `player.marker`. In `player.gd`, you can actually see where the initial markers are, which we observed over wireshark connections as well:
 
-### player.gd:1
+## player.gd:1
 ```js
 extends "res://game/unit/unit.gd"
 
@@ -240,7 +234,7 @@ On the last line there, we added the `FLAG_BOAT` as seen, which was the flag the
 
 Now there was only one more thing, and thats' the fact that the chest is not created unless you **actually** fished once:
 
-### server2.gd:157
+## server2.gd:157
 ```js
 func _handleFish(pid):
 	if not has_node("player_" + str(pid)):
@@ -252,7 +246,7 @@ func _handleFish(pid):
 
 This code is hit once you do `start_fish` on the client from the fishing rod item. This helped us understand the framework, since the server gets this from fish request:
 
-### client2.gd:511
+## client2.gd:511
 ```js
 func start_fish(target):
 	socket.put_u8(MsgClientFish)
@@ -273,18 +267,18 @@ Me, getting that flag.
 At this point we conclude we have the ability to send arbitrary event requests. We can request to fish by attacking. We can request to do literally anything by overriding attacking as our trigger. 
 
 
-## Challenge: Skull Island
+# Challenge: Skull Island
 
 Using our knowledge of _stuff_, we realized the flag for the Skull Island is in the _eye_ (go figure). We used our fly hacks to propel/god ascend to the eye and grab the flag. We also had to make sure we kept the `FLAG_EYES` in our player `markers`. 
 
 ![]({{ site.baseurl}}/assets/images/ctf/tasteless-21/skull_island.png)
 
 
-## TP Hacks (challenge: Conch)
+# TP Hacks (challenge: Conch)
 
 Using our event request knowledge from earlier, we decided it was time to stop flying around the map and instead time to start teleporting around the map. To make this possible, we used the same client request overrides found in the boat challenge. Instead of overriding attacking, this time we decided to override how using the chat worked. Each time a message was sent from the user, `chat(whisper, msg)` was called. We introduced a handler:
 
-### client2.gd: 574
+## client2.gd: 574
 ```js
 func chat(whisper, msg):
     _msg_handler(msg)
@@ -317,7 +311,7 @@ Now this is only useful if you actually know where you want to teleport, and luc
 
 In the level `Conch` you are tasked with finding a hiding rabbit, which is requested of you in the `quest_fish.gd`. Once you get the conch, a special event occurs that places the rabbit you are looking for at a random coordinate on the map:
 
-### conch.gd:10
+## conch.gd:10
 ```js
 func _init():
 	rabbit = Vector3(rand_range( - 100, 100), rand_range( - 100, 100), rand_range( - 100, 100))
@@ -339,7 +333,7 @@ func use(collider, from):
 
 That init function is run every time you get the conch. The conch can also be used to get you the _Euclidean Distance_ to the rabbit. It's passed to the `conch` function in the same file, but will just print `Close` or `Far` in a hot an cold way. We modify it to print useful data:
 
-### conch.gd:28
+## conch.gd:28
 ```js
 static func conch(distance, player):
 	var x = player.global_transform.origin.x
@@ -385,11 +379,11 @@ def trilaterate(P1,P2,P3,r1,r2,r3):
 
 We simply made a estimated triangle around the closest points, got their distances (which is the radi), and used the points in this equation. This returned to us a point. Using the earlier mentioned `/tp` command we introduced, we teleported to the exact point of the rabbit and got the flag. 
 
-## RNG Hacks (challenge: Thrybrush)
+# RNG Hacks (challenge: Thrybrush)
 
 The last flag we had time to get in this CTF was the `Thrybrush` challenge. Right from the get-go we found the npc that was responsible for this challenge on Melee Island. His code can be found in the `guybrush.gd` file. He implements a chat method that allows you to talk to him:
 
-### guybrush.gd:10
+## guybrush.gd:10
 ```js
 func chat(from, msg):
 	if not (from.remote_id in players):
@@ -432,7 +426,7 @@ func chat(whisper, msg):
 
 Ignoring the use of the `insults` dict, which we will explain soon, we can now send him messages and receive insults back from him. Now onto how to get the flag. Looking at the earlier snippet starting from line 10 in `guybrush.gd`, we can see that the way you get the flag has to do with you predicting his next message:
 
-### guybrush.gd:14
+## guybrush.gd:14
 ```js
 var bw = players[from.remote_id]
 	var next_try = bw.dig()
@@ -445,7 +439,7 @@ var bw = players[from.remote_id]
 
 The objective is to guess his next message, so that `bw.distance` is reduced. You want it to equal 0. Here is the list of messages he can say, and how he generates a random order of insults:
 
-### guybrush.gd:32
+## guybrush.gd:32
 ```js
 ar insults = {
 "You fight like a dairy Farmer!":"How appropriate. You fight like a cow!", 
@@ -599,12 +593,12 @@ Here is the output of this script for the dialog interaction we recorded:
 
 After this, it was as simple as inputing the numbers we knew was next in the sequence, due to the earlier done `chat` override that would replace the number with the insult from the insults dict. It takes about 18 insults (after the 8 observed) to win. Just like the Skull Island challenge, you must have `FLAG_BIGWHOOP` in your `player.markers` to be able to spawn the chest, so use the earlier hack for flags. Find the full solve script [here](https://github.com/mahaloz/ctf_files/blob/main/ctfs/tasteless-21/tasteless-shores/solve_insults.py).
 
-## Thanks where thanks is due
+# Thanks where thanks is due
 
 I need to give a huge shutout to both Lucas and Wil. For the majority of the game I had to continually send them my game patches and they had to run it since I had no work setup. They also were a huge part in solving these levels. As usual, this solve was only possible with friends :). 
 
 
-## Conclusion
+# Conclusion
 
 This was a really fun challenge, and a classic example of game hacking. I did wish there was more binary related stuff, but I know its hard to dump a lot of time into making a game engine. I also wish we had more time to solve part 5 and 6 of this challenge set, since I'm sure it must have been great. We got 10th, gg. 
 

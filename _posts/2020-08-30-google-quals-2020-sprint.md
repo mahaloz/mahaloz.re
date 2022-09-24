@@ -1,17 +1,10 @@
 ---
 title: "Reversing printf-as-a-VM service in Google Quals 2020"
-classes: wide
 layout: post
-tags: [ctf]
+tags: [ctf, reversing, vm]
 description: "Solving a virtual machine implemented inside format strings found in the printf library in C with @kylebot."
 ---
-
-Solving a virtual machine implemented inside format strings found in the printf
-library in C.
-
-<!--more--> 
-
-## An overview
+# An overview
 This writeup is based on the `sprint` challenge in google quals 2020. 
 You can find all the challenge files, including our solve, [here](https://github.com/mahaloz/mahaloz.re/tree/master/writeup_code/google-quals-20).
 In this challenge, Google introduced us to a new type of instruction set, which in turn allowed us to play a video game completely virtualized in the C language's `sprintf` format strings. 
@@ -32,7 +25,7 @@ We break this writeup into sections:
 - [Thanks where thanks is due](#thanks-where-thanks-is-due)
 - [Conclusion](#conclusion)
 
-## Investigating the Program
+# Investigating the Program
 Let's start by investigating the program in our disassembler of choice. We are lucky enough to have IDA Pro, but this should be doable in Ghidra. 
 
 ![investigate all the binaries](https://media.giphy.com/media/42wQXwITfQbDGKqUP7/giphy-downsized.gif)
@@ -96,7 +89,7 @@ When taking a look at the variables accessed and used by the initial sprint we r
 
 Since the remainder of this writeup will be concerning format strings, it is useful to do a quick overview of the format specifiers relevant to this challenge. 
 
-### A brief review of format strings:
+## A brief review of format strings:
 The relevant specifiers for this challenge are `%n`, `$`, `%h`, `%c`, and `*`:
 * `%c` specifies to print a character, or a single byte. This includes null bytes. 
 * `%h` specifies the size of the print of the buffer to 2 bytes. This means everything with this specifier will print 2 bytes (a cunning way to always move 2 bytes). 
@@ -107,7 +100,7 @@ The relevant specifiers for this challenge are `%n`, `$`, `%h`, `%c`, and `*`:
 With this knowledge we can parse the first part of the first format string: `%1$00038s%3$hn`.
 The `1$` accesses the first argument; the `00038s` prints a string that is of length 38, right formatted. The `%3$hn` then writes the value `38` formatted to 2 bytes to the third argument to `sprintf`. In conclusion, this instruction moved the value `0x0026` to register `A3`. 
 
-## Instruction Lifting
+# Instruction Lifting
 Although we still had no idea how the VM worked at this point, we decided to write a lifter for the format string instructions and translate it into a human readable assembly. We needed to do some [lifting](https://reverseengineering.stackexchange.com/questions/12460/lifting-up-binaries-of-any-arch-into-an-intermediate-language-for-static-analysi)!
 
 ![lifffffffffft](https://media.giphy.com/media/3oriNZoNvn73MZaFYk/giphy.gif)
@@ -116,12 +109,12 @@ Although we still had no idea how the VM worked at this point, we decided to wri
 
 As noobs in reversing, we decided to do this in two overarching steps: a **syntax parser** and a **semantic parser** -- a similar path that a normal compiler takes.
 
-### Syntax Parser
+## Syntax Parser
 The syntax parser simply parses the format strings and gets information like what formatter it uses, which argument it takes, etc. For example, `%1$00038s` will be parsed as: `arg_num=1, con_len=38, formatter='s', len_arg_num=None` where `con_num` is the concrete length. `len_arg_num` is used for format string like `%1$*16$s` which takes the 16th argument as the length parameter. 
 
 During writing the syntax parser, we realized that the program constantly writes to the third parameter (we named it `A3` as shown above). We guessed it was something like a program counter (PC). It turned out we were right.
 
-### Semantic Parser
+## Semantic Parser
 The semantic parser is built upon the syntax parser. It takes the output from the syntax parser and then translates it into an assembly style [Intermediate Representation](https://www.sciencedirect.com/topics/computer-science/intermediate-representation) (IR). As explained earlier, `%1$00038s%3$hn` writes 38 to `A3`. So, the semantic parser outputs `A3 = 38`.
 
 During writing the semantic parser. We found a lot of interesting things:
@@ -183,7 +176,7 @@ A3 = COND_JUMP_A14 + 0x1a3 + 1 + A4 + 0xffdb
 -------------
 ```
 
-## IR Optimization: Making Readable Assembly
+# IR Optimization: Making Readable Assembly
 Now that we have a relatively readable IR, what's next? Optimization of course.
 
 This IR is far from optimized. For example, it shows `A3 = <num>`; however, what does it mean? In fact, it overwrites the last two bytes of the format string pointer so in the next `sprintf` loop, another format string will be processed. Basically, `A3` is the program counter! We realized it would be nice if we could show it like `PC = 5` for basic blocks instead of weird `A3 = 0xb7`.
@@ -243,7 +236,7 @@ PC = 10 if A14 == 0 else 21             # A3 = 384 if A14 == 0 else 804
 -------------
 ```
 
-## Decompilation, Execution, and Luck
+# Decompilation, Execution, and Luck
 At this stage, we had a highly readable IR. Hardcore reversers would be happy enough with it and figure out the logic pretty quickly. However, as reversing noobs, we chose another approach: translate it to x86_64 assembly, open it in IDA and get it's IDA decompilation.
 The idea is based on the fact that control flow transition is done by setting `PC`. We can simply add a label for each basic block and translate `PC = 1; A8 = 0X7000` to `di = 0x7000; jmp label1`. The idea is nasty, but it worked pretty well. IDA is smart enough to understand the function even if there are many `jmp` instructions in it.
 
@@ -281,7 +274,7 @@ The outputted decompilation was pretty readable for the most part:
 
 Most amazingly, with some prologue, epilogue and most importantly some luck, this binary actually runs with `mmap_min_addr` set to 0(due to the fact that the VM uses address 0).
 
-## Finding a Game and Beating It
+# Finding a Game and Beating It
 ![Video Game!](https://media.giphy.com/media/1lAJ9qQXW3NFecqT25/giphy.gif)
 
 At this stage, the flag is not far from reach. We had extracted the program on the inside of this `sprintf` VM and we now had a way to execute, debug, and understand it. Quickly, we noticed that this was a game based on this code:
@@ -376,8 +369,8 @@ Our winning movements looked something like this:
 
 ![Winning!]({{ site.baseurl}}/assets/images/solving_maze.gif)
 
-## Thanks where thanks is due
+# Thanks where thanks is due
 This challenge was in no way a one man effort, as you can likely tell from the writing style. This challenge would not have been possible without [kylebot](http://kylebot.net/about/) on Shellphish. We struggled through the night, and he played a huge part in the chall (much more major than I). Also, shoutout to any other people who jumped in the Shellphish Discord and gave their two cents.
 
-## Conclusion
+# Conclusion
 This was a very very fun challenge to do. Now we know `even printf is turing complete`. The most impressive part to us is the `if-else` instruction. That was mind-blowing to us when we figured it out. I don't have any complaints about this challenge. The experience was flawless and the maze was quick enough to be solvable. If you too are reversing noob, know that even you can solve a hard challenge if you put in the time :). 

@@ -1,28 +1,21 @@
 ---
 title: "Reversing a game implemented in a rom-to-eng translator in HackTM 2020"
-classes: wide
 layout: post
-tags: [ctf]
+tags: [ctf, reversing, vm]
 description: "Solving a video game wrapped inside an obfuscated translation engine."
 ---
-
-Solving a video game wrapped inside an obfuscated translation engine. 
-
-<!--more-->
-
-
-## Challenge Description:
+# Challenge Description:
 > "The binary is still in development. The final version would have let you play
 > boggle"
 
 All the files for this chall, including my solve, can be found [here](https://github.com/mahaloz/mahaloz.re/tree/master/writeup_code/hacktm-20).
 
-## Introduction
+# Introduction
 After the first 24 hours of HackTM-20 playing with pwndevils, I was finished working 
 on all the "Bear" reversing challenges with @fish. I decided it was time to confront 
 my fears and finally reverse a Rust binary.
 
-## Overall Understanding 
+# Overall Understanding 
 Within the first few seconds of getting this binary we do a simple file on the
 two files provided:
 ```bash
@@ -66,7 +59,7 @@ this is true since they put a delimiter `<BR>` between each English and Romanian
 translation -- also, the entire file was loaded into memory earlier. Time to
 jump into this binaries assembly code! 
 
-## Discovering important functions 
+# Discovering important functions 
 
 After about 0.01 seconds of looking at this binary in any decompiler, IDA Pro in
 my case, we see that this binary was compiled from the language Rust. That is
@@ -172,7 +165,7 @@ hackdex> 9
 hackdex(9)>
 ```
 
-## How do we get the flag? 
+# How do we get the flag? 
 
 Once we enter the PRO Mode, we can vaguely see that this is the right path to a
 flag since we see `"HackDex!\n\n===> GG!"` at offset `0xE453` -- of course since
@@ -244,7 +237,7 @@ As you can see, the check is run 6 times. We can confirm this by looking at the
 cross references to the function. So we need to input 6 "correct" words to get
 the flag. Now we need to understand what makes a word "valid."
 
-## Valid Words
+# Valid Words
 
 At this point, we need to explore the `dex::extra` function and find things that
 look interesting in mangling our input. We find two such functions at `0xE312`
@@ -332,7 +325,7 @@ If the output of the hash is:
 then we have inputted the correct strings and we decrypt the stored flag using
 the `chacha` cipher. 
 
-## Playing some Boggle
+# Playing some Boggle
 
 After figuring all of that out, I was stumped for little since the input space
 of 6 strings was a little too large to bruteforce for an expected hash. Out of
@@ -391,7 +384,7 @@ for boggle table, then try every combination to the `SHA256` sum. After trying
 this initially, and failing, I speculated that we needed to use one more piece
 of information to finish this boi... the hackdex dictionary file!
 
-## Getting that Flag
+# Getting that Flag
 
 Here is the full recap of the rundown to solving for the flag:
 1. We discovered the pro version 
@@ -466,7 +459,7 @@ The full solve script can be found
 [here](https://github.com/mahaloz/mahaloz.re/tree/master/writeup_code/hacktm-20)
 
 
-## Thanks where thanks is due
+# Thanks where thanks is due
 
 Big thanks to @fish for the help in this solve!
 

@@ -1,15 +1,9 @@
 ---
 title: "Lambda calculus challenges for ASU Undergrads"
-classes: wide 
 layout: post
-tags: [ctf]
+tags: [ctf, math]
 description: "This was a challenge written for a programming languages and compilers course at ASU. This is meant to test your skill in lambda calculus."
 ---
-
-This was a challenge written for a programming languages and compilers course at ASU. This is meant to test your skill in lambda calculus.
-
-<!--more-->
-
 # Rules
 This challenge is broken into three parts, each with growing difficulty. To
 complete these challenges you *ARE NOT* expected to re-write common lambda
