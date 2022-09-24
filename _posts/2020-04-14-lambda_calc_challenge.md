@@ -1,5 +1,5 @@
 ---
-title: "Lambda Calculus Challenge 1"
+title: "Lambda calculus challenges for ASU Undergrads"
 classes: wide 
 layout: post
 tags: [ctf]

@@ -1,5 +1,5 @@
 ---
-title: "Insomnihack22: Reversing an rng-as-a-service Go Server"
+title: "Insomnihack22: Reversing an flawed ECC rng-as-a-service Go Server"
 classes: wide
 layout: post
 tags: [ctf]

@@ -12,9 +12,9 @@ Hi, I'm [Zion Leonahenahe Basque](https://zionbasque.com) a native Hawaiian hack
 
 <!-- small, centered image --> 
 <p align="center">
-  <img src="/assets/images/pixel_zion_profile.jpg" width="40%"/>
+  <img src="{{site.baseurl}}/assets/images/pixel_zion_profile.jpg" width="40%"/>
 </p>
 <!-- end non-markdown --> 
 
 
-This is my technical blog. I post all things hacking related here. If you want to learn more about me professionally, check out my professional page [@zionbasque.com](https://zionbasque.com). If you want to get a hold of me, just shoot me an email -- I'll likely invite you to the Shellphish/ASUHC discord for further communication.
+This is my technical blog. I post all things hacking-related here. If you want to learn more about me professionally, check out my professional page [zionbasque.com](https://zionbasque.com). If you want to get a hold of me, just shoot me an email -- I'll likely invite you to the Shellphish/ASUHC discord for further communication.

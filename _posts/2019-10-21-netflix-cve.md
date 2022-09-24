@@ -1,5 +1,5 @@
 ---
-title: "Netflix: CVE-2019-10028"
+title: "I'll DOS your Netflix TV: CVE-2019-10028"
 classes: wide
 layout: post
 tags: [research]

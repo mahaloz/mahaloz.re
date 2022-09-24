@@ -11,6 +11,7 @@ header_pages:
 style: dark
 
 footer: ''
+favicon: assets/images/favicon.jpg
 
 # Build settings
 markdown: kramdown

@@ -1,5 +1,5 @@
 ---
-title: "HackTM 2020: Hackdex Writeup (RE)"
+title: "Reversing a game implemented in a rom-to-eng translator in HackTM 2020"
 classes: wide
 layout: post
 tags: [ctf]

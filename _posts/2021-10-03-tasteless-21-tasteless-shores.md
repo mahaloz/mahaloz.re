@@ -1,5 +1,5 @@
 ---
-title: "Tasteless 21: Game Hacking in Tasteless Shores"
+title: "Tasteless 21: Godot Game Hacking in Tasteless Shores"
 classes: wide
 layout: post
 tags: [ctf]

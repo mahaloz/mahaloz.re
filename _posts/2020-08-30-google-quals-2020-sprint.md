@@ -1,5 +1,5 @@
 ---
-title: "Google Quals 2020: Sprint (RE)"
+title: "Reversing printf-as-a-VM service in Google Quals 2020"
 classes: wide
 layout: post
 tags: [ctf]
@@ -15,7 +15,7 @@ library in C.
 This writeup is based on the `sprint` challenge in google quals 2020. 
 You can find all the challenge files, including our solve, [here](https://github.com/mahaloz/mahaloz.re/tree/master/writeup_code/google-quals-20).
 In this challenge, Google introduced us to a new type of instruction set, which in turn allowed us to play a video game completely virtualized in the C language's `sprintf` format strings. 
-Through some reverse engineering, and IDA finagling, we created a disassembler for the sprint arch, which is the name we are declaring for this challenges [ISA](https://en.wikipedia.org/wiki/Instruction_set_architecture).
+Through some reverse engineering and IDA finagling, we created a disassembler for the sprint arch, which is the name we are declaring for this challenges [ISA](https://en.wikipedia.org/wiki/Instruction_set_architecture).
 
 ![Winning!]({{ site.baseurl}}/assets/images/solving_maze.gif)
 

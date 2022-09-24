@@ -1,5 +1,5 @@
 ---
-title: "CSAW Quals 2020: Blox1/2 Writeup (PWN)"
+title: "Exploiting a custom tetris game in CSAW Quals 2020"
 classes: wide
 layout: post
 tags: [ctf]
