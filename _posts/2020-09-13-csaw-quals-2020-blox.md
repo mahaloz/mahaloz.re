@@ -4,7 +4,7 @@ layout: post
 tags: [ctf, pwn]
 description: "Pwning a custom Tetris game through an out-of-bounds write to memory through block manipulation and changes to the `.text` segment." 
 ---
-# Challenge Description
+## Challenge Description
 This writeup is based on two challenges from CSAW Quals 2020, `blox1` and `blox2` collectively known as the `blox` challenge. `blox1` was the reversing portion, and `blox2` was the pwning portion. My teammates [Paul](https://github.com/pcgrosen), [Nathan (UCSB)](https://github.com/n-wach), and [Nathan (ASU)](https://twitter.com/Pascal_0x90) solved the majority of `blox1`, so I will focus on the pwning aspect of this challenge.
 
 > We found an old arcade machine lying around, manufactured by the RET2 Corporation. Their devs are notorious for hiding backdoors and easter eggs in their games, care to take a peek?
@@ -17,21 +17,30 @@ This writeup is based on two challenges from CSAW Quals 2020, `blox1` and `blox2
 
 **pwn desc**: "invalidate the warranty."
 
-# Overview
+## Overview
 We are given the source code to a [tetris](https://en.wikipedia.org/wiki/Tetris) video game that allows cheats if the right tetrominos are placed at specific board locations. If you use the cheats correctly you can cause an overflow outside of the board printed on the screen. The overflow allows a partial [write primitive](https://stackoverflow.com/questions/52827397/what-is-the-meaning-of-write-4-primitive). Upgrading the primitive with writes to the `.text` allows you to get the flag. 
 
 ![]({{ site.baseurl}}/assets/images/blox_cheats.gif)
 
 As an overview I will cover:
-1. [Reversing cheat mode (brief)](#reversing)
-2. [Searching for vulnerabilities](#searching-for-vulnerabilities)
-3. [Understand our write primitive](#understanding-our-primitives)
-4. [Upgrading our write primitive](#upgrading-our-write-primitive)
-5. [Shellcoding to win](#shellcoding-to-victory)
+- [Challenge Description](#challenge-description)
+- [Overview](#overview)
+- [Reversing](#reversing)
+  - [Recon](#recon)
+  - [Static Analysis of the Binary](#static-analysis-of-the-binary)
+  - [Constraint Solving](#constraint-solving)
+- [Searching for Vulnerabilities](#searching-for-vulnerabilities)
+- [Understanding our Primitives](#understanding-our-primitives)
+- [Upgrading our Write Primitive](#upgrading-our-write-primitive)
+  - [Real Arbitrary Pointer](#real-arbitrary-pointer)
+  - [Real Arbitrary Write Values](#real-arbitrary-write-values)
+- [Shellcoding to Victory](#shellcoding-to-victory)
+- [Thanks Where Thanks is Due](#thanks-where-thanks-is-due)
+- [Conclusion](#conclusion)
 
 
-# Reversing 
-## Recon
+## Reversing 
+### Recon
 So we are playing some sort of modified Tetris:
 
 ![]({{ site.baseurl}}/assets/images/blox1_ex1.png)
@@ -62,7 +71,7 @@ if (!cheats_enabled && check_cheat_codes()) {
 ```
 This already gives us the direction of this reversing challenge which is reverse the `check_cheat_codes()` function to get the codes we need to enter to satisfy a call to the `hw_log`. Unfortunately, the source code for this challenge does not contain `check_cheat_codes()`, so we need to either get the binary for this challenge or use ret2systems built in disassembler. I like IDA (or Ghidra) more, so I decided to go with the former. 
 
-## Static Analysis of the Binary
+### Static Analysis of the Binary
 
 At the time we solved this challenge, there was no binary released, so we had to leak it directly from the ret2systems `gdb` interface. This is somewhat trivial since you can just dump all the contents of memory and copy it out select-master style.
 
@@ -83,7 +92,7 @@ for ( j = 0; j <= 4; ++j )
 ```
 Both are very similar, and the gist is that they iterate the board doing a type of coordinate check for tetrominos at certain positions. To get the exact positions we can do a constraint solve by just iterating all the possible values (brute force).
 
-## Constraint Solving
+### Constraint Solving
 
 ![](https://media.giphy.com/media/l378lYLOhPZVG653y/giphy.gif)
 
@@ -130,7 +139,7 @@ Finally, we used that key log in thier custom `pwntools` like interaction enviro
 
 ```python
 p = interact.Process()
-# data = p.readuntil('\n')
+## data = p.readuntil('\n')
 p.sendline("\nw w w w w w w w \n\nw w w w w w w \n\nw w w w w w w w \n\nw w w w w w w w \n\ncaaaaaadw w w w w w w w w \n\nw w w w w w w w\n\naaaaaadd dwd caaaad aaddda daadwd dddd aaddw aaa ddaacd aadcaaw d awa daaw aw  awa daa dad aaawd w w w \n\naaaaaadd dwd dddd aaa  aacddddd dddddaaa aaacw  aaa awa awa wdd daaawww dw waa awaaaa caaaaaawa ddddd  w w w\n")
 
 p.interactive()
@@ -142,7 +151,7 @@ Now we get that cash $$$ and end in interactive mode:
 
 Now that we have the first flag, it's time to move on to the pwn section of this challenge. 
 
-# Searching for Vulnerabilities 
+## Searching for Vulnerabilities 
 Recall from the desctiption that we need to "void the warranty". This is made clear by the code:
 ```c
 // magic values for the hardware logging mechanism
@@ -226,7 +235,7 @@ while ((c = getchar()) != '\n') {
 
 At face value, this is a `write-what-where` primitive.
 
-# Understanding our Primitives
+## Understanding our Primitives
 
 So we have an overflow that allows us to make `heap_top` a value we control, then we can write to it... but we have many constraints that make this hard to do. Line 126 is a culprit for two of our three restrictions on this primitive:
 
@@ -252,8 +261,8 @@ Since to overwrite `heap_top` it had to overflow at the bottom of the board, we 
 
 At this point, we stop and need to think about a cheeky way to do this in a clean and fast move. We need to use our partial write primitive to disable these checks by overwriting the code that checks it. What is the best way to do this?
 
-# Upgrading our Write Primitive
-## Real Arbitrary Pointer
+## Upgrading our Write Primitive
+### Real Arbitrary Pointer
 The first thing we should deal with is finding a way to write more specific values to `heap_top` (restriction 3), since this will be fundamental to overwriting things that this pointer points to. Aside from placing an initial value that can be somewhat consistent, we have one other way to make the pointer more specific, located in `malloc`:
 
 ```c
@@ -270,7 +279,7 @@ while ((c = getchar()) != '\n') { ... }
 
 This is works because the code won't do anything if we enter only a newline. The only interesting thing about this is that we need to implement an algorithm that gets a new high score every game. This is easy if we alaways place `I` shaped tetrominos to incremeant our score each game. Great, now we can actually move our pointer "anywhere" (that is 4 byte aligned). 
 
-## Real Arbitrary Write Values
+### Real Arbitrary Write Values
 
 Now let's deal with restriction one and two. If we are going to really write anything we need to get passed that check shown earlier. We have two options:
 1. One by one overwrite the values being compared against our input
@@ -320,7 +329,7 @@ while ((c = getchar()) != '\n') {
 
 Doing this would give us a full write-what-where primitive. 
 
-# Shellcoding to Victory
+## Shellcoding to Victory
 Now that we have the full primitive, it's time to finish this challenge up with shellcode that calls `log_hw` with the hacking constant. 
 
 As a review here is the plan of the first part of our exploit:
@@ -353,31 +362,31 @@ So to complete our plan, it looks like this:
 Let's put it all together and get that flag!
 
 ```python
-# Activate Cheat Mode
+## Activate Cheat Mode
 p.sendline("\nw w w w w w w w \n\nw w w w w w w \n\nw w w w w w w w \n\nw w w w w w w w \n\ncaaaaaadw w w w w w w w w \n\nw w w w w w w w\n\naaaaaadd dwd caaaad aaddda daadwd dddd aaddw aaa ddaacd aadcaaw d awa daaw aw  awa daa dad aaawd w w w \n\naaaaaadd dwd dddd aaa  aacddddd dddddaaa aaacw  aaa awa awa wdd daaawww dw waa awaaaa caaaaaawa ddddd  w w w\n")
 
-# Initialize heap_top to 202
+## Initialize heap_top to 202
 p.sendline("JaaaaawwwO" + "s"*18 + "Ja w w w w w w w \n\n\n\n")
 p.sendline("\n\n")
 
-# Increment to 212
+## Increment to 212
 for i in range(6):
     new_hs()
 new_hs(skip=True)
 
-# Overwrite the jump
+## Overwrite the jump
 p.sendline("\x50\n")
 
-# Reinit heap_top to 202
+## Reinit heap_top to 202
 p.sendline("JaaaaawwwO" + "s"*18 + "Ja w w w w w w w \n\n\n\n")
 p.sendline("\n\n")
 
-# Write Shellcode
+## Write Shellcode
 new_hs(skip=True)
 #p.sendline("\n")
 p.sendline("\xBF\x41\x41\x41\x41\xE8\x67\x0B\x00\x00\x90\x90\n")
 
-# Call Shellcode
+## Call Shellcode
 new_hs(skip=True)
 ```
 
@@ -387,10 +396,10 @@ With a final solve looking something like this in the end:
 
 
 
-# Thanks Where Thanks is Due
+## Thanks Where Thanks is Due
 Like I said before, my teammates are what make this solve so successful. I couldn't have done it without: [Paul](https://github.com/pcgrosen), [Nathan (UCSB)](https://github.com/n-wach), [Nathan (ASU)](https://twitter.com/Pascal_0x90), and any other person the jumped into the voice channel to help. Paul came up with the brilliant idea to only overwrite one byte in the jump bytes. Playing with friends is what makes these games enjoyable :). 
 
-# Conclusion 
+## Conclusion 
 Like earlier, the challenge files and all the solve scripts can be found [here](https://github.com/mahaloz/mahaloz.re/tree/master/writeup_code/csaw-quals-20). This CTF had a lot of guessy challenges, but it also had some very well crafted pwn challenges -- like this one by [itzsn](https://github.com/itszn). Overall, I think this CTF was good **for the current times**. It's not easy to organize a CTF with death and fires on the horizon. Thank you NYUSEC. Oh yeah, and we got first overall :).
 
 ![]({{ site.baseurl}}/assets/images/blox_scoreboard.png)

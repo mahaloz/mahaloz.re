@@ -5,7 +5,7 @@ tags: [research, bug-hunting, pwn, fuzzing]
 description: "Finding an out-of-bounds read on a Netflix-DIAL server with Mayhem"
 ---
 
-# Introduction 
+## Introduction 
 This month, while testing Mayhem on various open source projects, one open
 source project had some fruitful Mayhem results. The Netflix Dial Server
 located in the Netflix Github repository had a remote out-of-bounds read which
@@ -15,7 +15,7 @@ Since many other fuzz testers are unable to fuzz network communication in an
 efficient manner, most webserver-like progams are full of bugs which Mayhem can
 trigger. 
 
-# Background 
+## Background 
 In early 2013 Netflix was working on a project called Discovery And Launch,
 better known as DIAL. The DIAL server was one of the first prototypes at
 streaming Netflix and YouTube directly from your smartphone to your television.
@@ -30,13 +30,13 @@ communicate with an iPhone--making this an interesting target.
 
 ![iPhone POC]({{ site.baseurl}}/assets/images/research/netflix-writeup-2019/iphone-netflix-poc.jpeg)
 
-# Recon
+## Recon
 Looking at the dial-reference readme, it says: "The DIAL client uses CURL to
 send HTTP request commands to the DIAL server," which is right up Mayhem's alley
 of operation. Quickly reversing some of the dial-server code shows that the
 server listens over a constant IP Address and port.
 
-## dial_server.c
+### dial_server.c
 ```c
 42 // TODO: Partners should define this port
 43 #define DIAL_PORT (56789)
@@ -50,7 +50,7 @@ The main component of the DIAL server is the mongoose server, which is based on
 the original mongoose embedded server released around the same time as DIAL.
 This code is significantly modified to be as compact as possible.
 
-## mongoose.h
+### mongoose.h
 ```c
 22 // NOTE: This is a SEVERELY stripped down version of mongoose [...] 
 ```
@@ -58,7 +58,7 @@ This code is significantly modified to be as compact as possible.
 Weighing in at about 960 lines, the mongoose.c file had the potential to be
 buggy, so we decided to finally start Mayhem on the DIAL Server.
 
-# Harnessing
+## Harnessing
 Harnessing is usually one of the harder tasks when fuzzing webservers, but
 luckily the engineers at ForAllSecure have had their fair share of fuzzing.
 Simply running the Mayhem packaging system on the DIAL Server binary collected
@@ -66,13 +66,13 @@ all the linked libraries and placed them into a well formated file. The last
 part of harnessing was simply specifying what networking protocol (TCP or UDP),
 what port, and what IP to fuzz on--presto, we have a fuzzer.
 
-# Fuzzing Performance
+## Fuzzing Performance
 Mayhem did surprisingly well on the binary without modification to the source
 code or customized compilation. Executions clocked in at around 1400 executions
 per second, which is not amazing but still awesome. The server explored branches
 relatively fast and found a crash within the first 24 hours. 
 
-# Triaging Rouge Requests
+## Triaging Rouge Requests
 The DIAL server crashed with a SIGSEGV showing a backtrace culprit of 
 `discard_current_request_from_buffer` function. After spending some time tracking
 the passing of bytes and requests, it was clear that the problem was coming from the
@@ -128,20 +128,20 @@ length: `-13377777777777 (0xfffff3d53e4ec38f)`, gets converted to
 If the passed size is of certain size, it will cause a `memmove` of a non-readable
 memory location, which will crash the program.
 
-# Crashing Example
+## Crashing Example
 When sent to the server, it causes a SIGSEGV crash. 
 ```
 GET /foo HTTP/1.1
 Content-Length:-12377777775679
 ```
 
-# Simple Fix, Complex Benefit
+## Simple Fix, Complex Benefit
 Since the bug is found in the length check, a fix could be as simple as changing:
 `assert(conn->data_len >= conn->request_len);`
 to:
 `assert(conn->data_len >= conn->request_len && conn->request_len > 1);`
 
-# Responsible Disclosure
+## Responsible Disclosure
 Here at ForAllSecure we take responsible disclosure very seriously, because 
 one bad timed bug can cause a lifetime of ill impact. Before making this post we
 contacted Netflix and informed them of the bug and the simple way to fix it. The
@@ -150,12 +150,12 @@ Credit for the reference was also published in their reference repository at
 [nflx-2019-003.md](https://github.com/Netflix/security-bulletins/blob/master/advisories/nflx-2019-003.md).
 After confirming the fix had been pushed, we created this blog post.
 
-# Credit Where Credit is Due
+## Credit Where Credit is Due
 Finding and triaging this bug would have not been possible without the hardwork
 that engineers put into making Mayhem awesome and without my fellow coworker
 Paul Emge, who spent as much time as I did on this bug. 
 
-# Other Sources
+## Other Sources
 The discovery of this bug is also mentioned in [Security
 Boulevard](https://securityboulevard.com/2019/09/forallsecure-uncovers-vulnerability-in-netflix-dial-software/)
 , [ForAllSecure

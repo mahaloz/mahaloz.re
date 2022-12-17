@@ -4,22 +4,22 @@ layout: post
 tags: [ctf, reversing, game-hacking, crypto]
 description: "Reversing a Go binary to find it generates flawed RNG from a P256 Elliptic Curve chosen with a reversible P and Q for number generation. Solution based on the Dual EC crypto paper."
 ---
-# Introduction
+## Introduction
 
 During [Insomni'hack teaser 2022](https://ctftime.org/event/1505), I worked on a reversing challenge called **Nobus101** that ended up having a lot of fun use-cases for my debugging tool [decomp2gef](https://github.com/mahaloz/decomp2gef). You can all the challenge files and solve in [shellphish/writeups](https://github.com/shellphish/writeups/tree/main/challenges/rev/golang/Insomnihack22-Nobus101)
 
-## Collaborators
+### Collaborators
 - [@redgate]()
 - [@mystiz / Samuel](https://mystiz.hk/)
 
-## Challenge Description
+### Challenge Description
 
 The challenge is a single binary, [nobus101.bin](https://github.com/shellphish/writeups/blob/main/challenges/rev/golang/Insomnihack22-Nobus101/nobus101.bin). The challenge description is:
 > An old Clyde Frog employee, J.S., gave us an access to a not so experimental PRNG: 
 `curl http://nobus101.insomnihack.ch:13337`
 
 
-# Scouting a Go Binary
+## Scouting a Go Binary
 You can often tell that a binary is a Go binary just by opening it in a decompiler and seeing the naming convention:
 
 ![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic1.png)
@@ -73,7 +73,7 @@ main_main
 main_init
 ```
 
-# Understanding the HTTP Server
+## Understanding the HTTP Server
 I was once told by a smart reverser to "never start at _start", but in this case I think it's really helpful to take a glance at the `main_main` of the binary which happens right after the `init` of main. It's almost like an entry point. 
 
 There is a lot of trash in the decompilation because Go has a lot of Runtime checks. For the majority of these, you can ignore them. There is one easily distinguishable line in the decompilation:
@@ -172,7 +172,7 @@ func handleRequests() {
 
 Nice. Alright, enough overview of the http server. Let's find out how the hell they are generating random numbers.
 
-# Random Number Generator
+## Random Number Generator
 When looking at `main_main` again I took note of the user-made functions that were called:
 ```
 main_seed()
@@ -233,7 +233,7 @@ gef➤  x/4gx (long long *) ((long long *) qword_864E88)[1]
 
 It's actually the same value we see set in the string `132867e88e82431dc40ba24e11bf3ec7ffb18764a3b4df1f5957fd5f37d8be40`. This information is actually super useful to remember when trying to understand the varoious Big Ints we see set all over this program. 
 
-# Understanding P256 EC
+## Understanding P256 EC
 From searching around on the internet, it turns out that `P256` is a well-known configuration of Eliptic Curves (ECs). At this point, I wanted to start understanding how this was utilized in Go. The [docs](https://pkg.go.dev/crypto/elliptic) provide a nice overview, but to really understand it, I took a look at the source. 
 
 **[crypto/elliptic/p256.go:28](https://cs.opensource.google/go/go/+/refs/tags/go1.17.6:src/crypto/elliptic/p256.go;drc=a81b5e4d0a843e6ef28c8b933904a03fd8666f3e;l=28)**
@@ -274,14 +274,14 @@ Q = k*P
 
 `P` and `Q` (not the P shown in source) are points on the curve and `k` is like the private key that turns P into Q, just like RSA. If this is interesting to you, I highly suggest checking out what [CryptoHack](https://cryptohack.org/challenges/ecc/) has on this subject.
 
-# Where is the Bug?
+## Where is the Bug?
 So the author is using a crypto library in a well-known language that is implementing a well-known EC variant. Where could the bug be? I saw only two possible directions:
 1. The author is trying to show us some bug in Golang that can be exploited in the right scenario 
 2. The author is trying to show us some bug when you choose a specific `Q` and `k` with P256.
 
 I originally started with 1, but I pivoted to 2 after googling around a lot and finding a lot of [forum discussion](https://crypto.stackexchange.com/questions/52983/why-is-there-the-option-to-use-nist-p-256-in-gpg) about people claiming P256 was backdoored. At first, I thought it was just nonsense, then I found this paper: [Dual EC: A Standardized Back Door](https://luca-giuzzi.unibs.it/corsi/Support/papers-cryptography/dual-ec-20150731.pdf). 
 
-## The Paper Spark Notes
+### The Paper Spark Notes
 The paper presents a way to, surprise surprise, guess the next random number in a series of given numbers when you know point `P`, `Q`, `k` and guesses before your current guess. They do this with some tricks on the choice of `P` and `Q`.
 
 ![]({{ site.baseurl}}/assets/images/ctf/insomnia-22/pic3.png)
@@ -292,7 +292,7 @@ Lucky for me, I found a script of this exact attack implementation for [UTCTF 20
 
 So the question now becomes, what is `P`, `k`, and `Q` because we need them for the attack. Let the search begin. 
 
-# Understanding Q Generation
+## Understanding Q Generation
 The pinnacle of solving this challenge is understanding how `Q` is generated, which is of course done in the `main_gen_Q`:
 ```c
 void __golang main_gen_Q(__int64 a1, __int64 a2)
@@ -441,7 +441,7 @@ All I needed now was `P`, which I was not sure how I lost. I posted `Q` and `k`,
 So `P` (the point), is actually `G`, which we know from the standard description. 
 
 
-# Breaking RNG
+## Breaking RNG
 There is one other thing to note about how I knew this was the right attack. This is because in the paper it talks about the top 16 bits being lost when the original rng numbers are known. This aligns perfectly with the user-defined function `main_discard_bits`, which does the following:
 ```c
 int main_discard_bits(int a1) {
@@ -458,17 +458,17 @@ for i in range(5):
     worker_id = (worker_id << 1) | (0 if os.fork() else 1)
 
 if worker_id:
-	# do work
+	## do work
 ```
 
 Thanks to help from @Samuel, this was the important part of the solving code:
 ```python
-    # the numbers given by the server
+    ## the numbers given by the server
     v1 = 0x920324424eed2d0575b12b12857d9684ac3486b5087cddf8a60e4e129939
     v2 = 0xce9c8866c6e5f6a0816d7c10dca0c2e6ffaa3101ccc882b371136766052
     print(f"running", worker_id)
 
-    # optimized with np
+    ## optimized with np
     arrs = np.array_split(list(range(2**16)), 32)
     for dr in arrs[worker_id]:
         _r1 = v1 + 2**240 * dr
@@ -489,5 +489,5 @@ Thanks to help from @Samuel, this was the important part of the solving code:
 
 Find the full solve [here](https://github.com/shellphish/writeups/blob/main/challenges/rev/golang/Insomnihack22-Nobus101/solve.py).
 
-# Conclusion 
+## Conclusion 
 In conclusion, this challenge had a nice introduction to both Go reversing and to understanding a cool attack on RNG generated from the P256 EC implementation. As usual, this challenge was not possible to solve without both @redgate (whom stayed up late reversing with me) and @mystiz / Samuel. 
