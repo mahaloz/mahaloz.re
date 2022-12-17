@@ -3,6 +3,7 @@ title: "Exploiting a custom tetris game in CSAW Quals 2020"
 layout: post
 tags: [ctf, pwn]
 description: "Pwning a custom Tetris game through an out-of-bounds write to memory through block manipulation and changes to the `.text` segment." 
+toc: true
 ---
 ## Challenge Description
 This writeup is based on two challenges from CSAW Quals 2020, `blox1` and `blox2` collectively known as the `blox` challenge. `blox1` was the reversing portion, and `blox2` was the pwning portion. My teammates [Paul](https://github.com/pcgrosen), [Nathan (UCSB)](https://github.com/n-wach), and [Nathan (ASU)](https://twitter.com/Pascal_0x90) solved the majority of `blox1`, so I will focus on the pwning aspect of this challenge.

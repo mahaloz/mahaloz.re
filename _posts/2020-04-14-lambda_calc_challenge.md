@@ -3,6 +3,7 @@ title: "Lambda calculus challenges for ASU Undergrads"
 layout: post
 tags: [ctf, math]
 description: "This was a challenge written for a programming languages and compilers course at ASU. This is meant to test your skill in lambda calculus."
+toc: true
 ---
 ## Rules
 This challenge is broken into three parts, each with growing difficulty. To

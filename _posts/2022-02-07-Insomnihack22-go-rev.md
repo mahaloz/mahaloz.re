@@ -3,6 +3,7 @@ title: "Insomnihack22: Reversing a flawed ECC rng-as-a-service Go Server"
 layout: post
 tags: [ctf, reversing, game-hacking, crypto]
 description: "Reversing a Go binary to find it generates flawed RNG from a P256 Elliptic Curve chosen with a reversible P and Q for number generation. Solution based on the Dual EC crypto paper."
+toc: true
 ---
 ## Introduction
 

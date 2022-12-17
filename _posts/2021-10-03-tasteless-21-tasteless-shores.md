@@ -4,6 +4,7 @@ layout: post
 tags: [ctf, reversing, game-hacking]
 feature_image: /assets/images/ctf/tasteless-21/feature_image.png
 description: "A series of game hacking challenges hosted in Tasteless 21. Decompiling, modifying, and recompiling Godot scripts to abuse client-side computations for a multiplayer game. Fly hacks, no-damage, super speed, and rng abuse."
+toc: true 
 ---
 ## Introduction
 This weekend we played Tasteless 21 and they had a great series of challenges. This year they spent a painstaking amount of time making a 3D game called `Tasteless Shores`. It was big enough to be it's own category in the game, hosting a total of 6 challenges in the same game. My teammates and I completed 4/6, and it was super fun. In this writeup I'll try to mostly focus on how to do the game hacks that made solving the challenges possible. 

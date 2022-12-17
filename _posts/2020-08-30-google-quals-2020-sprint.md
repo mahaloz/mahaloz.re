@@ -3,6 +3,7 @@ title: "Reversing printf-as-a-VM service in Google Quals 2020"
 layout: post
 tags: [ctf, reversing, vm]
 description: "Solving a virtual machine implemented inside format strings found in the printf library in C with @kylebot."
+toc: true
 ---
 ## An overview
 This writeup is based on the `sprint` challenge in google quals 2020. 

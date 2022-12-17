@@ -3,6 +3,7 @@ title: "Reversing a game implemented in a rom-to-eng translator in HackTM 2020"
 layout: post
 tags: [ctf, reversing, vm]
 description: "Solving a video game wrapped inside an obfuscated translation engine."
+toc: true
 ---
 ## Challenge Description:
 > "The binary is still in development. The final version would have let you play

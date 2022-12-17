@@ -3,6 +3,7 @@ title: "I'll DOS your Netflix TV: CVE-2019-10028"
 layout: post
 tags: [research, bug-hunting, pwn, fuzzing]
 description: "Finding an out-of-bounds read on a Netflix-DIAL server with Mayhem"
+toc: true
 ---
 
 ## Introduction 
