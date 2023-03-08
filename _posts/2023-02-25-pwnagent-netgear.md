@@ -1,14 +1,14 @@
 ---
-title: "PwnAgent: A One-Click WAN-side RCE in Netgear RAX Routers"
+title: "PwnAgent: A One-Click WAN-side RCE in Netgear RAX Routers with CVE-2023-24749"
 layout: post
 tags: [bug-hunting]
-description: "A breakdown of a bug SEFCOM T0 and I exploited to achieve a WAN-side RCE in some Netgear RAX routers for pwn2own 2022. The bug is remote accessible command injection due to bad packet logging."
+description: "A breakdown of a bug SEFCOM T0 and I exploited to achieve a WAN-side RCE in some Netgear RAX routers for pwn2own 2022. The bug is a remotely accessible command injection due to bad packet logging, cataloged as CVE-2023-24749."
 toc: true
 ---
 
-Last December, my colleagues and I from [SEFCOM T0](https://sefcom.asu.edu/T0) competed in pwn2own 2022 where we [demonstrated an exploit to get RCE](https://twitter.com/mahal0z/status/1600322330970173441?s=20) in a Synology NAS. Although we were proud of this complicated exploit, we had a _much_ simpler, but more impactful, bug in another target that we never got to demo. That target was the [Netgear Nighthawk RAX30 Router](https://www.netgear.com/support/product/rax30.aspx), one of the latest and greatest models you can buy. Days before the competition, Netgear patched the bug in the _RAX30 Router_, the only model at pwn2own, eliminating our submission 😭. 
+Last December, my colleagues and I from [SEFCOM T0](https://sefcom.asu.edu/T0) competed in pwn2own 2022 where we [demonstrated an exploit to get RCE](https://twitter.com/mahal0z/status/1600322330970173441?s=20) in a Synology NAS. Although we were proud of this complicated exploit, we had a _much_ simpler, but more impactful, bug in another target that we never got to demo. That target was the [Netgear Nighthawk RAX30 Router](https://www.netgear.com/support/product/rax30.aspx), one of the latest and greatest models you can buy. Days before the competition, Netgear patched the bug, and several others, in the _RAX30 Router_, the only model at pwn2own, eliminating our submission 😭. 
 
-Netgear classified this [patch](https://kb.netgear.com/000065451/Security-Advisory-for-Multiple-Vulnerabilities-on-the-RAX30-PSV-2022-0028-PSV-2022-0073) as a LAN-side RCE; however, this bug can be easily exploited on WAN-side. Additionally, this bug _may still_ be present in the latest firmware of some of the **other** RAX models. In an exploration of some recent RAX versions, it's clear the code is shared. We believe Netgear knows about these bugs in the other firmware, but has delayed in pushing a fix for a while. Curious if your router is one of these affected models? Read on, we have a live demo running. 
+Netgear classified this [patch (1.0.9.92)](https://kb.netgear.com/000065451/Security-Advisory-for-Multiple-Vulnerabilities-on-the-RAX30-PSV-2022-0028-PSV-2022-0073) as a LAN-side RCE, though it's unclear which bugs they are referring to in this patch. Although our bug was patched in this version, it's misclassified. This bug can be easily exploited on WAN-side. Additionally, this bug _may still_ be present in the latest firmware of some of the **other** RAX models. In an exploration of some recent adjacent RAX versions, it's clear the code is shared (including the affected binary). We believe Netgear knows about these bugs in the other firmware, but has delayed in pushing a fix for a while. By the time of this post, they may be fixed. In any event, CVE-2023-24749 refers to this WAN-side accessible bug, with specifics on what to look out for. Curious if your router is one of these affected models? Read on, we have a live demo running. 
 
 Before talking about any of the _how_, let's talk about the impacts.
 
@@ -29,7 +29,7 @@ We've created a fun (and safe 👌) way to know if your router is pwned. Visit t
 I also demoed the LAN-side exploit of this bug at [CactusCon 2023](https://youtu.be/-J8fGMt6UmE?t=23304) if you just want to watch a video :). Alright, let's get down to what this powerful bug is...
 
 ## The Bug
-This bug was initially discovered by [@clasm](https://twitter.com/cl4sm), then reversed by me, and assisted by the rest of T0 team. For the rest of this blog, we will only reference the layout of the RAX30 firmware, as things may be slightly different in each model. The bug exists in a nonchalant binary in `/bin` called `puhttpsniff`. 
+This bug was initially discovered by my teammate [@clasm](https://twitter.com/cl4sm), then reversed by me, and assisted by the rest of T0 team. For the rest of this blog, we will only reference the layout of the RAX30 firmware, as things may be slightly different in each model. The bug exists in a nonchalant binary in `/bin/` called `puhttpsniff`. 
 
 The `puhttpsniff` binary is responsible for logging tcp traffic on port 80. It will **only** log traffic that is leaving a local IP. This means the only traffic that gets recorded will be from devices already on the router. 
 
@@ -106,6 +106,22 @@ This bug is very simple to understand, but, in practice, hard to automatically f
 
 I thought the simplicity of exploitation for this bug, and the strange place it occurred, warranted a fun bug name. I named it `PwnAgent`, since I really never thought a device would mess up parsing of the UserAgent. 
 
+## Protecting Yourself
+If you find yourself to be one of the unlucky folk with an unpatched RAX model, you have three options:
+1. Stop using the internet until Netgear patches it.
+2. Drop all packets leaving or entering containing a malicious-looking UserAgent (contains unusual chars).
+3. Patch your `puhttpsniff` binary by downloading the firmware, patching, and reflashing to your router. 
+
+If you choose 3, here is a nice and simple patch to apply to `puhttpsniff`:
+```python
+binary = bytearray(open("puhttpsniff", "rb").read())
+binary[0x1094:0x1098] = [0x90]*4 # NOPs
+open("puhttpsniff_new", "wb").write(binary)
+```
+It will patch out the `system` call that allows the inject, since this binary has no other purpose but logging. 
+
+
+
 ## Bug Discovery
 
 At SEFCOM, we had a bunch of automated tooling and techniques to discover bugs that we used for our targets; however, this bug was ironically discovered manually while waiting for those tools.
@@ -127,3 +143,8 @@ I think there are a few interesting takeaways here. First, there are still _many
 2. Automated fuzz harnessing (hard)
 
 At least publicly, we have neither of those things. To make the internet of things safer, we need to make moves in increasing automated analysis of firmware. If you know anyone with a Netgear router, please tell them to update their router to be on the safe side. 
+
+## Acknowledgments
+- [SEFCOM](https://sefcom.asu.edu/): especially Wil and T=0.
+- [Adam Doupe](https://adamdoupe.com/): for giving us the idea to look into JavaScript.
+- [@CatatonicPrime](https://twitter.com/CatatonicPrime): TBA
