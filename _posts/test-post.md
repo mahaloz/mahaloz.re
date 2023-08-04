@@ -1,9 +1,7 @@
 ---
-title: "Test Post"
 layout: post
 tags: []
 description: "this is a test post"
-hidden: true 
 ---
 
 Last December, my colleagues and I from [SEFCOM T0](https://sefcom.asu.edu/T0) competed in pwn2own 2022 where we [demonstrated an exploit to get RCE](https://twitter.com/mahal0z/status/1600322330970173441?s=20) in a Synology NAS. Although we were proud of this complicated exploit, we had a _much_ simpler, but more impactful, bug in another target that we never got to demo. That target was the [Netgear Nighthawk RAX30 Router](https://www.netgear.com/support/product/rax30.aspx), one of the latest and greatest models you can buy. Days before the competition, Netgear patched the bug, and several others, in the _RAX30 Router_, the only model at pwn2own, eliminating our submission 😭. 
