@@ -79,7 +79,7 @@ Yes, it's a textbook command injection. You only need to escape the quotes, whic
 If you were paying attention earlier, you might recall that this should only be triggerable via LAN like the original Netgear report:
 > "It will only log traffic that is leaving a local IP."
 
-How could you, from the outside, control the UserAgent of a device on the inside of the router? Thanks to the web wisdom of [Adam Doupe](https://adamdoupe.com/), who was only passing by when we mentioned the bug, we found that Javascript can request arbitrary UserAgent responses from executors. Javascript, when loaded by your browser, can ask you to send certain requests that have server-requested UserAgents. 
+How could you, from the outside, control the UserAgent of a device on the inside of the router? Thanks to the web wisdom of [Adam Doupe](https://adamdoupe.com/), who was only passing by when we mentioned the bug, we found that JavaScript can request arbitrary UserAgent responses from executors. JavaScript, when loaded by your browser, can ask you to send certain requests that have server-requested UserAgents. 
 
 Tested on the latest Firefox as of this post, you can request a custom UserAgent from visitors with the following JavaScript:
 ```html
@@ -98,7 +98,7 @@ With this in mind, the execution of the exploit goes something like this:
 1. A victim get's on his router and is assigned an IP: `192.168.1.2`
 2. The victim goes on Firefox and clicks link `malicious.site`
 3. `malicious.site` send `192.168.1.2` the code of the site to render locally
-4. `192.168.1.2` sees Javascript and executes the code
+4. `192.168.1.2` sees JavaScript and executes the code
 5. `192.168.1.2` sends an attacker controlled UserAgent back to `malicious.site`
 6. In transit, the victim router records `192.168.1.2` UserAgent and gets pwned 
 
@@ -144,7 +144,7 @@ I think there are a few interesting takeaways here. First, there are still _many
 1. Full system emulation (hard)
 2. Automated fuzz harnessing (hard)
 
-At least publicly, we have neither of those things. To make the internet of things safer, we need to make moves in increasing automated analysis of firmware. If you know anyone with a Netgear router, please tell them to update their router to be on the safe side. 
+At least publicly, we have neither of those things. To make the Internet of Things safer, we need to make moves in increasing automated analysis of firmware. If you know anyone with a Netgear router, please tell them to update their router to be on the safe side. 
 
 ## Acknowledgments
 - [SEFCOM](https://sefcom.asu.edu/): especially Wil and T=0.
