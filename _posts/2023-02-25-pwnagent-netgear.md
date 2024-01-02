@@ -120,7 +120,7 @@ binary = bytearray(open("puhttpsniff", "rb").read())
 binary[0x1094:0x1098] = [0x90]*4 # NOPs
 open("puhttpsniff_new", "wb").write(binary)
 ```
-It will patch out the `system` call that allows the inject, since this binary has no other purpose but logging. 
+It will patch out the `system` call that allows the injection since this binary has no other purpose but logging. 
 
 
 
