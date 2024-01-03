@@ -122,7 +122,7 @@ I generally summarize Cifuentes' dissertation as identifying (implicitly) three 
 Although these areas had much work to be done in 1994, other academics did not approach them deeply for many more years.
 However, hackers across the world are now ready to make their own decompilers, following the same general ideas. 
 
-## The Dawn of Hacker Decopmilers
+## The Dawn of Hacker Decompilers
 
 It would be impossible to list all the decompilers that popped up post-Cifuentes, so instead, I will list the ones that still live today.
 Luckily, you already know one of them: IDA Pro, [which established its decompiler HexRays in 2007](https://hex-rays.com/about-us/our-journey/), and continues to dominate the decompiler game today.
@@ -131,7 +131,7 @@ Both IDA and Reko follow the general ideas introduced in Cifuentes' work, struct
 Some assume that IDA Pro took this to a new level by doing some condition-checking to reduce structures at this time. 
 
 Much of the work at this time follows the same ideas, with varying success, but research in the academic world started around 4 years later in 2011.
-Without jumping too far into the future, it's worth noting [Sonwman](https://github.com/x64dbg/snowman) and [fcd](https://github.com/fay59/fcd) decompiler were also released in 2015.
+Without jumping too far into the future, it's worth noting [Snowman](https://github.com/x64dbg/snowman) and [fcd](https://github.com/fay59/fcd) decompiler were also released in 2015.
 I like to assume that around the development time of IDA Pro, [Ghidra](https://ghidra-sre.org/) was also developed. 
 If you know of any other decompilers that belong here, please let me know on social media or in the comments. 
 
