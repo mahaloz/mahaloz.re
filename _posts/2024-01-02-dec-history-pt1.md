@@ -234,10 +234,10 @@ The future is not bleak though! There are open-source decompilers now and we hav
 ## Wrap Up
 
 To summarize, there has been growth in the decompiler community, but it has been much slower than others. 
-Aside from control flow structuring, there has been significant work in using [machine learning to recover symbols](), [human studies to inform decompiler developers](), and some preliminary work in using LLMs for code output. 
+Aside from control flow structuring, there has been significant work in using [machine learning to recover symbols](https://www.atipriya.com/files/papers/varbert_oakland24.pdf), [human studies to inform decompiler developers](https://www.usenix.org/conference/usenixsecurity22/presentation/burk), and some preliminary work in [using machine translation for code output](https://arxiv.org/abs/2212.08950). 
 Control flow structuring though is still developing and has many problems to overcome. 
 We explore those problems, why they exist, modern approaches, and what the future may look like for decompilers in part 2 of this post series.
 
 If you enjoyed this post, I hope you'll upvote or like it on some [social media](https://twitter.com/mahal0z) platform, since quantitating impact is always nice for researchers :). 
-I've also integrated a funny GitHub comment system if you like to use GitHub for interation or stars. 
+I've also integrated a funny GitHub comment system if you like to use GitHub for interaction or stars. 
 Until next time, see you in Part 2!
