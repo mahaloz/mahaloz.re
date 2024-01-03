@@ -7,7 +7,12 @@ tags: []
 
 # About
 
-Hi, I'm [Zion Leonahenahe Basque](https://zionbasque.com) a native Hawaiian hacker, better known as mahaloz. I'm the co-captain of the [ctf](https://ctftime.org/about/) team [@Shellphish](https://twitter.com/shellphish?lang=en) and the previous president of the [@asuhackingclub](http://asuhacking.club). I love reverse engineering, pwning, exploration robotics, and computers in general. I'm a PhD student in the Arizona State University [SEFCOM](https://ctftime.org/about/) research lab. My research also focuses on reverse engineering, with special regards to decompilation. My research advisors are the renowned [Dr. Fish Wang](https://ruoyuwang.me/) & [Dr. Yan Shoshitaishvili](https://www.yancomm.net/).
+Hi, I'm [Zion Leonahenahe Basque](https://zionbasque.com) a native Hawaiian hacker, better known as mahaloz ([mahal0z](https://twitter.com/mahal0z) on Twitter). 
+I'm a previous co-captain of the [ctf](https://ctftime.org/about/) team [Shellphish](https://twitter.com/shellphish?lang=en). 
+I love reverse engineering, decompilation, and binary analysis. 
+I'm a PhD student in the Arizona State University [SEFCOM](https://ctftime.org/about/) research lab. 
+My research also focuses on reverse engineering, with special regard to decompilation. 
+My research advisors are the renowned [Dr. Fish Wang](https://ruoyuwang.me/) & [Dr. Yan Shoshitaishvili](https://www.yancomm.net/).
 
 
 <!-- small, centered image --> 
