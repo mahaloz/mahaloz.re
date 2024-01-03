@@ -77,35 +77,35 @@ Here is a snippet of code produced by the 1994 `dcc`, the decompiler introduced 
 ```c
 #include "dcc.h"
 
-void proc_1 (int argo, int arg1, int arg2)
+void proc_1 (int arg0, int arg1, int arg2)
 {
     int loc1; 
     int loc2; 
     int loc3;
-    Loc2 = 0;
-    while ((10c2 < 5)) {
-        10c3 = 0;
-        while ((10c3 < 4)) {
-            1001 = 0;
-            while ((10c1 < 4)) {
-                *(((1002 * 10) + arg2) + (1003<< 1)))= 
-                    (*11(1002 < 3) + arg0) + (1001 << 1)))*
-                    *((((1001 * 10) + arg1) + (1003<<1)))) +
-                    *(1002 * 10) + arg2) + (10c3 <1))));
-                10c1 = (10c1 + 1) ;
+    loc2 = 0;
+    while ((loc2 < 5)) {
+        loc3 = 0;
+        while ((loc3 < 4)) {
+            loc1 = 0;
+            while ((loc1 < 4)) {
+                *((((loc2 * 10) + arg2) + (loc3 << 1))) = 
+                    ((*((((loc2 << 3) + arg0) + (loc1 << 1))) *
+                    *((((loc1 * 10) + arg1) + (loc3 << 1)))) +
+                    *(((loc2 * 10) + arg2) + (loc3 << 1 ))));
+                loc1 = (loc1 + 1) ;
             ｝
-            10c3 = (10c3 + 1);
+            loc3 = (loc3 + 1);
         ｝
-        10c2 = (10c2 + 1);
+        loc2 = (loc2 + 1);
     }
 }
 
-void main (
+void main ()
 { 
-    int 10c1; 
+    int loc1; 
     int loc2; 
     int loc3;
-    proc_1 (81003, &1002, &1001);
+    proc_1 (&loc3, &loc2, &loc1);
 }
 ```
 
