@@ -37,29 +37,9 @@ Indeed the goto structure can be constructed from any node with an edge, which m
 
 Let's run an example to briefly understand how this works.
 Below you will find a five-node CFG, which has been lifted from an assembly graph:
+
 #### Example Graph
-```
-                            +-----+
-                            |  A  |
-                            +-----+
-                              |   |
-                           ~x |   +--+
-                              V      |
-                         +-----+     |
-                         |  B  |     | x
-                         +-----+     |
-                           |  +--+   |
-                        ~y |     | y |
-                           V     V   V
-                       +-----+  +-----+
-                       |  D  |  |  C  |
-                       +-----+  +-----+
-                            |    |
-                            V    V
-                            +-----+
-                            |  E  |
-                            +-----+
-```
+![](/assets/images/dec-history/struct_ex.png)
 
 That diamond pattern encapsulated in `B`-`E` is a classic `if-then-else` structure, where `y` is the condition. 
 Unfortunately, there is also an edge slamming right in the middle of that structure: `A -> C`, violating the known pattern.
