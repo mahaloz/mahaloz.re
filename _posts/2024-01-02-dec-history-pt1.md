@@ -132,7 +132,8 @@ Some assume that IDA Pro took this to a new level by doing some condition-checki
 
 Much of the work at this time follows the same ideas, with varying success, but research in the academic world started around 4 years later in 2011.
 Without jumping too far into the future, it's worth noting [Snowman](https://github.com/x64dbg/snowman) and [fcd](https://github.com/fay59/fcd) decompiler were also released in 2015.
-I like to assume that around the development time of IDA Pro, [Ghidra](https://ghidra-sre.org/) was also developed. 
+At that same time, Vector35, the company behind the [Binary Ninja](https://binary.ninja/) decompiler, was [founded](https://www.crunchbase.com/organization/vector-35).
+I like to assume that around the development time of IDA Pro, [Ghidra](https://ghidra-sre.org/) was also developed.
 If you know of any other decompilers that belong here, please let me know on social media or in the comments. 
 
 ## The Academic Pickup
