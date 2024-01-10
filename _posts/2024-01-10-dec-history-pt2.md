@@ -189,7 +189,7 @@ In rev.ng, we reduced gotos at the expense of duplicating code.
 But one thing never answered was, _why do gotos even exist in decompilation?_
 Also, is goto reduction the _best way to measure_ when decompilers are improving? 
 
-In our work 2024 work ["Ahoy SAILR! There is No Need to DREAM of C: A Compiler-Aware Structuring Algorithm for Binary Decompilation"](https://www.zionbasque.com/files/publications/sailr_usenix24.pdf), referred to as SAILR, we explored these questions.
+In our 2024 work ["Ahoy SAILR! There is No Need to DREAM of C: A Compiler-Aware Structuring Algorithm for Binary Decompilation"](https://www.zionbasque.com/files/publications/sailr_usenix24.pdf), referred to as SAILR, we explored these questions.
 We also [open-sourced the entire decompiler](https://github.com/mahaloz/angr-sailr), [evaluation pipeline](https://github.com/mahaloz/sailr-eval), and [reimplementations of all previous work](https://github.com/mahaloz/sailr-eval/blob/e1af48353c1c5b32cc53cbaa015722d57767bd6e/sailreval/decompilers/angr_dec.py#L45) mentioned here. 
 
 
