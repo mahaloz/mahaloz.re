@@ -222,4 +222,4 @@ We explore those problems, why they exist, modern approaches, and what the futur
 If you enjoyed this post, I hope you'll upvote or like it on some [social media](https://twitter.com/mahal0z) platform, since quantitating impact is always nice for researchers :). 
 I've also integrated a funny GitHub comment system if you like to use GitHub for interaction or stars. 
 Lastly, I'd like to thank the [DARPA Assured MicroPatching program (AMP)](https://www.darpa.mil/program/assured-micropatching) for sponsoring this series of research at Arizona State University, which funds my PhD. 
-Until next time, see you in Part 2!
+Until next time, see you in [Part 2](/dec-history-pt2)!
