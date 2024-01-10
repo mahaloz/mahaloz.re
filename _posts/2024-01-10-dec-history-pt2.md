@@ -293,10 +293,9 @@ In conclusion, **SAILR can be summarized into three points**:
 2. CFGED is a new algorithm to fairly measure your distance from source.
 3. Not all gotos are evil.
 
-For more information on CFGED works, how you might revert optimizations, or how we discovered which optimizations cause gotos, read our paper. 
-The appendix also has a nifty step-by-step of the CFGED algorithm.
-Additionally, if you want to try out any of these previous works in the real world, check out our [sailr-eval](https://github.com/mahaloz/sailr-eval#using-sailr-on-angr-decompiler) repo for how to use angr.  
-
+For more information on how CFGED works, how you might revert optimizations, or how we discovered which optimizations cause gotos, read our paper. 
+The appendix also has a nifty step-by-step of the CFGED algorithm in practice.
+Additionally, if you want to try out any of these previous works in the real world, check out our [sailr-eval](https://github.com/mahaloz/sailr-eval#using-sailr-on-angr-decompiler) repo for how to use angr with previous structuring algorithms. 
 
 ## Wrap Up
 
