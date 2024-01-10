@@ -129,7 +129,7 @@ For instance, here is some DREAM ([implemented in angr](https://github.com/angr/
 If the SAT problem was solved, you could have reduced those two expressions. 
 Because you can't guarantee you can simplify an expression, you are left with many overlapping booleans. 
 In a [slide](https://docs.google.com/presentation/d/1qiZ9TuMZoC8dGqIATininf13PRk4YLG04Ne69kp-1LY/edit#slide=id.g1f608501ff2_0_10042) from my Ohio State Talk, I counted the number of Boolean operators in DREAM and other algorithms output.
-DREAM had around **9600** Booleans. Phoenix had **342**. The source code (Coreutils) had **1256**. 
+DREAM had around **9,600** Booleans. Phoenix had **342**. The source code (Coreutils) had **1,256**. 
 
 Though with its flaws, DREAM still had an important effect on decompilation. 
 Namely, it introduced the importance of [Single-Entry Single-Exit (SESE) Regions](https://iss.oden.utexas.edu/Publications/Papers/PLDI1994.pdf), which played a fundamental role in future papers. 
