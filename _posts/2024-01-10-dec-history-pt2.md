@@ -299,7 +299,7 @@ Additionally, if you want to try out any of these previous works in the real wor
 
 ## Wrap Up
 
-And here we are, at the end of this whirlwind of a post.
+And here we are, at the end of this whirlwind of a post series.
 Many issues still exist in decompilation aside from structuring, such as low fidelity to source, weak editability, no recompilability, and other sub-topics such as poor symbol recovery. 
 Of these issues, I find, possibly biasedly, that control flow structuring is the most interesting.
 I hope after reading this, you find it interesting too, since it's still unsolved! 
