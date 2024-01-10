@@ -309,6 +309,6 @@ Notice that in the graph on `CFGED v Gotos`, SAILR is still nearly double the go
 The future of _perfect decompilation_ is tied to improving these two scores. 
 I believe with open and community-driven work, we will achieve near-perfect decompilation. 
 
-I'd like to acknowledge the [DARPA AMP](https://www.darpa.mil/program/assured-micropatching) grant for funding this research. 
+I'd like to acknowledge the [DARPA AMP](https://www.darpa.mil/program/assured-micropatching) program for funding this research. 
 Lastly, I'd like to thank you, the reader. 
 Your support motivates us to keep pushing the boundaries of what is possible. 
