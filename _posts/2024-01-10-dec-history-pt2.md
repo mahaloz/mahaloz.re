@@ -248,7 +248,7 @@ Take this simplified example based on the SAILR paper:
 <span class="nl">LABEL_6:</span>
   <span class="n">puts</span><span class="p">(</span><span class="s">"third"</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mi">1u</span><span class="p">);</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">puts</span><span class="p">(</span><span class="s">"fourth"</span><span class="p">);</span>
 </code></pre></div></div>
 </td>
@@ -263,7 +263,7 @@ Take this simplified example based on the SAILR paper:
     <span class="n">puts</span><span class="p">(</span><span class="s">"second"</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="p">)</span>
     <span class="n">puts</span><span class="p">(</span><span class="s">"third"</span><span class="p">);</span>
-<span class="n">sleep</span><span class="p">(</span><span class="mh">0x1</span><span class="p">);</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mh">1</span><span class="p">);</span>
 <span class="n">puts</span><span class="p">(</span><span class="s">"fourth"</span><span class="p">);</span>
 </code></pre></div></div>
 </td>
