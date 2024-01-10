@@ -28,6 +28,17 @@ Admittedly, the final paper in this series is SAILR, my paper.
 As such, I'll be using many of the same arguments and questions I used in my paper to understand previous works mentioned here.
 As said in the summary of this post, Part 2 will be more technical than Part 1, but it should be accessible to newcomers. 
 
+As a reminder, though these are all of the decompilation structuring papers in security, many structuring techniques were informed from other fields and conferences. 
+These include the research communities for compilers, static analysis, and programming languages.
+Here are some notable ones listed for completeness which will not be covered in this post:
+```bash
+2022: Beyond Relooper: recursive translation of unstructured control flow to structured control flow (functional pearl) 
+2011: Emscripten: an LLVM-to-JavaScript compiler
+1997: Making Graphs Reducible with Controlled Node Splitting
+1973: On the capabilities of while, repeat, and exit statements
+1970: Control flow analysis.
+```
+
 ## Phoenix: Condition-Aware Schema Matching
 
 The 2013 work [Phoenix](https://www.usenix.org/system/files/conference/usenixsecurity13/sec13-paper_schwartz.pdf) came at an interesting time since when it was published IDA Pro had an openly working decompiler for over 6 years. 
@@ -268,6 +279,7 @@ SAILR is the exception, which produces the source code exactly in this example.
 The code was compiled with `gcc -O2`, the default compiler optimization level for packages in Linux.
 Indeed, IDA Pro has both a goto and duplicated code (`puts("second")`).
 In SAILR, we found that the cause of _most_ gotos is just **9 compiler optimizations**, most found in `O2`.
+For any savvy decompiler people, these findings suggest that [reducible graphs](https://dl.acm.org/doi/pdf/10.1145/355609.362337) are unimportant to decompilation structuring. 
 The only way to ever get rid of these gotos, while maintaining structure like the source, is to revert them precisely. 
  
 This realization was important because up until this point, we had been removing gotos from decompilation without knowing why.
