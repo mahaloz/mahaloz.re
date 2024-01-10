@@ -36,7 +36,7 @@ Here are some notable ones listed for completeness which will not be covered in 
 2011: Emscripten: an LLVM-to-JavaScript compiler
 1997: Making Graphs Reducible with Controlled Node Splitting
 1973: On the capabilities of while, repeat, and exit statements
-1970: Control flow analysis.
+1970: Control flow analysis
 ```
 
 ## Phoenix: Condition-Aware Schema Matching
