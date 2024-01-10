@@ -1,0 +1,17 @@
+# http://www.graphviz.org/content/cluster
+
+digraph G {
+  graph [fontname = "Handlee"];
+  node [fontname = "Handlee", shape=rectangle];
+  edge [fontname = "Handlee"];
+
+  bgcolor=transparent;
+  
+
+  A -> B [label="~x"];
+  A -> C [label="x"];
+  B -> C [label="y"];
+  B -> D [label="~y"];
+  C -> E;
+  D -> E;
+}
