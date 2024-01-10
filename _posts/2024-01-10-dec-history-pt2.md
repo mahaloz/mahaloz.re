@@ -10,7 +10,7 @@ toc: true
 ## A Recap
 
 In [Part 1](/dec-history-pt1) of this series, we looked at the past 30 years of decompilation, providing a broad overview of how the field has been shaped.
-We also briefly covered how Cifuentes-based structuring worked: [graph-schema matching](/dec-history-pt1#example-graph), where an algorithm identifies patters in a CFG to make code.
+We also briefly covered how Cifuentes-based structuring worked: [graph-schema matching](/dec-history-pt1#example-graph), where an algorithm identifies patterns in CFGs to make code.
 Part 1 also garnered some interesting discussion across the web on [Hacker News](https://news.ycombinator.com/item?id=38859219), [Reddit](https://www.reddit.com/r/ReverseEngineering/comments/18xrsgn/30_years_of_decompilation_and_the_unsolved/), and [Twitter](https://twitter.com/mahal0z/status/1742576555153355223) among others. 
 Generally, I think the community is very alive and excited about research and posts in this area, which is encouraging :). 
 
