@@ -6,7 +6,7 @@ description: "A breakdown of a bug SEFCOM T0 and I exploited to achieve a WAN-si
 toc: true
 ---
 
-Last December, my colleagues and I from [SEFCOM T0](https://sefcom.asu.edu/T0) competed in pwn2own 2022 where we [demonstrated an exploit to get RCE](https://twitter.com/mahal0z/status/1600322330970173441?s=20) in a Synology NAS. Although we were proud of this complicated exploit, we had a _much_ simpler, but more impactful, bug in another target that we never got to demo. That target was the [Netgear Nighthawk RAX30 Router](https://www.netgear.com/support/product/rax30.aspx), one of the latest and greatest models you can buy. Days before the competition, Netgear patched the bug, and several others, in the _RAX30 Router_, the only model at pwn2own, eliminating our submission 😭. 
+Last December, my colleagues and I from [SEFCOM T0](https://sefcom.asu.edu/T0) competed in pwn2own 2022 where we [demonstrated an exploit to get RCE](https://twitter.com/mahal0z/status/1600322330970173441?s=20) in a Synology NAS. Although we were proud of this complicated exploit, we had a _much_ simpler, but more impactful, bug in another target that we never got to demo. That target was the [Netgear Nighthawk RAX30 Router](https://www.netgear.com/support/product/rax30.aspx), one of the latest and greatest models you can buy. Days before the competition, Netgear patched the bug, and several others, in the _RAX30 Router_, the only model at pwn2own, eliminating our submission. 
 
 Netgear classified this [patch (1.0.9.92)](https://kb.netgear.com/000065451/Security-Advisory-for-Multiple-Vulnerabilities-on-the-RAX30-PSV-2022-0028-PSV-2022-0073) as a LAN-side RCE, though it's unclear which bugs they are referring to in it. However, there is a [blog post by Synacktiv](https://www.synacktiv.com/en/publications/cool-vulns-dont-live-long-netgear-and-pwn2own.html) discovering this bug for a LAN-side exploit, which corresponds to [CVE-2022-47208](https://nvd.nist.gov/vuln/detail/CVE-2022-47208). It's important to note that many pwn2own 2022 teams found this bug at the same time, but until now, none have mentioned its use on WAN-side. 
 
@@ -19,14 +19,14 @@ To exploit this bug on a victim router the attacker needs to do two things:
 1. Setup a controlled website hosted on port 80 
 2. Get the victim to visit the attacker's site from behind the victim's router 
 
-This results in the attacker getting a RCE on the victim's router. For most RAX routers, this RCE is root, giving the attacker full control of your router. In the unfortunate scenario that you run nginx behind your vulnerable RAX router, this bug can be exploited with **0** interaction from you 🫢. 
+This results in the attacker getting a RCE on the victim's router. For most RAX routers, this RCE is root, giving the attacker full control of your router. In the unfortunate scenario that you run nginx behind your vulnerable RAX router, this bug can be exploited with **0** interaction from you. 
 
-For others newer to hacking routers, a root shell on a router (over remote) can allow an attacker to snoop on everything you visit (like a bad ISP 😬), read unencrypted traffic, mess with your DNS, and [do other nasty things](https://nordsecurity.com/blog/what-happens-when-router-is-hacked).
+For others newer to hacking routers, a root shell on a router (over remote) can allow an attacker to snoop on everything you visit (like a bad ISP), read unencrypted traffic, mess with your DNS, and [do other nasty things](https://nordsecurity.com/blog/what-happens-when-router-is-hacked).
 
 We don't know how many routers this affects, but, we do know this binary is shared by many. At the very least, if you are running a Netgear Nighthawk RAX30 Router that has not been updated since December of 2022, you are WAN-side pwnable. 
 
 ## Exploit Demo
-We've created a fun (and safe 👌) way to know if your router is pwned. Visit this ☢️ [http://pwn.mahaloz.re](http://pwn.mahaloz.re) ☢️. If your router is vulnerable, it will shut your router off (and that is all). If you can refresh the page after visiting, it means your router is safe (hopefully). 
+We've created a fun (and safe) way to know if your router is pwned. Visit this ☢️ [http://pwn.mahaloz.re](http://pwn.mahaloz.re) ☢️. If your router is vulnerable, it will shut your router off (and that is all). If you can refresh the page after visiting, it means your router is safe (hopefully). 
 
 I also demoed the LAN-side exploit of this bug at [CactusCon 2023](https://youtu.be/-J8fGMt6UmE?t=23304) if you just want to watch a video :). Alright, let's get down to what this powerful bug is...
 
