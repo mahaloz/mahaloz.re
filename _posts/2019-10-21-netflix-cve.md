@@ -1,5 +1,5 @@
 ---
-title: "I'll DOS your Netflix TV: CVE-2019-10028"
+title: "I'll Crash your Netflix TV: finding CVE-2019-10028"
 layout: post
 tags: [research, bug-hunting, pwn, fuzzing]
 description: "Finding an out-of-bounds read on a Netflix-DIAL server with Mayhem"
@@ -7,25 +7,20 @@ toc: true
 ---
 
 ## Introduction 
-This month, while testing Mayhem on various open source projects, one open
-source project had some fruitful Mayhem results. The Netflix Dial Server
+This month, while testing Mayhem on various open-source projects, one open-source project had some fruitful Mayhem results. The Netflix Dial Server
 located in the Netflix Github repository had a remote out-of-bounds read which
 Mayhem discovered. 
 
-Since many other fuzz testers are unable to fuzz network communication in an
-efficient manner, most webserver-like progams are full of bugs which Mayhem can
-trigger. 
+Since many other fuzz testers are unable to fuzz network communication efficiently, most webserver-like programs are full of bugs that Mayhem can trigger. 
 
 ## Background 
 In early 2013 Netflix was working on a project called Discovery And Launch,
-better known as DIAL. The DIAL server was one of the first prototypes at
-streaming Netflix and YouTube directly from your smartphone to your television.
+better known as DIAL. The DIAL server was one of the first prototypes for streaming Netflix and YouTube directly from your smartphone to your television.
 The DIAL server would come preinstalled on most TVs of the time. If this all
 sounds too familiar, it's because Google created a device called Google
 Chromecast that does the same thing. Google Chromecast originally used DIAL as
-its means for communications but eventually switched to mDNS--thus began the end
-of DIAL's usage. Although DIAL stopped shipping with new televisions, its not
-clear that DIAL is not purged from modern Netflix and YouTube applications.
+its means of communication but eventually switched to mDNS--thus began the end
+of DIAL's usage. Although DIAL stopped shipping with new televisions, it's not clear that DIAL is not purged from modern Netflix and YouTube applications.
 After a small investigation, we found that the DIAL server could still
 communicate with an iPhone--making this an interesting target. 
 
@@ -47,8 +42,8 @@ server listens over a constant IP Address and port.
 47
 ```
 
-The main component of the DIAL server is the mongoose server, which is based on
-the original mongoose embedded server released around the same time as DIAL.
+The main component of the DIAL server is the Mongoose server, which is based on
+the original Mongoose embedded server released around the same time as DIAL.
 This code is significantly modified to be as compact as possible.
 
 ### mongoose.h
@@ -63,7 +58,7 @@ buggy, so we decided to finally start Mayhem on the DIAL Server.
 Harnessing is usually one of the harder tasks when fuzzing webservers, but
 luckily the engineers at ForAllSecure have had their fair share of fuzzing.
 Simply running the Mayhem packaging system on the DIAL Server binary collected
-all the linked libraries and placed them into a well formated file. The last
+all the linked libraries and placed them into a well formatted file. The last
 part of harnessing was simply specifying what networking protocol (TCP or UDP),
 what port, and what IP to fuzz on--presto, we have a fuzzer.
 
@@ -116,7 +111,7 @@ on line 712 to check the `content_len` is smaller than the buffered size:
 `else if (conn->content_len < (int64_t) buffered_len)`
 which will pass and do:
 `body_len = (int) conn->content_len;`
-This allows a large 64 bit negative value (larger than 32 bit), to be converted
+This allows a large 64-bit negative value (larger than 32 bit), to be converted
 into 32 bits, which allows the negativeness to be dropped. So a value passed of
 length: `-13377777777777 (0xfffff3d53e4ec38f)`, gets converted to
 1045349263--allowing an arbitrary length read of a memory location.
@@ -126,7 +121,7 @@ length: `-13377777777777 (0xfffff3d53e4ec38f)`, gets converted to
 713     body_len = (int) conn->content_len;
 ```
 
-If the passed size is of certain size, it will cause a `memmove` of a non-readable
+If the passed size is of a certain size, it will cause a `memmove` of a non-readable
 memory location, which will crash the program.
 
 ## Crashing Example
@@ -143,17 +138,15 @@ to:
 `assert(conn->data_len >= conn->request_len && conn->request_len > 1);`
 
 ## Responsible Disclosure
-Here at ForAllSecure we take responsible disclosure very seriously, because 
-one bad timed bug can cause a lifetime of ill impact. Before making this post we
+Here at ForAllSecure we take responsible disclosure very seriously because one bad-timed bug can cause a lifetime of ill impact. Before making this post we
 contacted Netflix and informed them of the bug and the simple way to fix it. The
-bug was publicly fixed on the Netflix github with the commit [d1b1aa26](https://github.com/Netflix/dial-reference/commit/d1b1aa2636f89df95e57aa0c68836ce8d52f4638).
+bug was publicly fixed on the Netflix GitHub with the commit [d1b1aa26](https://github.com/Netflix/dial-reference/commit/d1b1aa2636f89df95e57aa0c68836ce8d52f4638).
 Credit for the reference was also published in their reference repository at
 [nflx-2019-003.md](https://github.com/Netflix/security-bulletins/blob/master/advisories/nflx-2019-003.md).
 After confirming the fix had been pushed, we created this blog post.
 
 ## Credit Where Credit is Due
-Finding and triaging this bug would have not been possible without the hardwork
-that engineers put into making Mayhem awesome and without my fellow coworker
+Finding and triaging this bug would have not been possible without the hard work that engineers put into making Mayhem awesome and without my fellow coworker
 Paul Emge, who spent as much time as I did on this bug. 
 
 ## Other Sources
