@@ -103,6 +103,7 @@ I encourage others to make usable and open-source implementations of their epic 
 
 Aside from direct academic publishing, many other things flourished this year for decompilation.
 There were [big updates](https://hex-rays.com/blog/discover-ida-9.0-exciting-new-features-and-improvements) for big decompilers, [fundamental changes](https://binary.ninja/2024/06/19/restructuring-the-decompiler.html) for smaller ones, new industry [approaches in full-AI decompilers](https://blog.reveng.ai/training-an-llm-to-decompile-assembly-code/), and some great talks across the cons.
+I'd also like to acknowledge all the unpublished researchers who showed me really cool things in 2024, like a DSL for decompilation. 
 
 For most of 2024, Dr. Cristina Cifuentes (the academic pioneer of decompilers) toured the world, [giving talks](https://www.youtube.com/watch?app=desktop&v=wo3xEa2elp4&list=PLUzWZANghr3bfJ3teu-bvdAZJzmU0g4iY&index=32) on her work in shaping the last 30 years of research.
 From my perspective, this peaked when she gave [the keynote](https://cfp.recon.cx/recon2024/talk/GYG8FH/) at [Recon 2024](https://cfp.recon.cx/recon2024/schedule/).
@@ -129,8 +130,8 @@ I remain optimistic that it is only the beginning of the research that will come
 That also makes 2025 a spectacular year to ride the new excitement in the field and do great research, both from new and old researchers.
 
 If you are a rising expert (or a zany practitioner), I encourage you to contribute your knowledge to the [Decompilation Wiki](https://decompilation.wiki/) so it may continue to organize and guide the field.
-Additionally, if you have any smaller research in decompilers you think is neat, consider following me up on [X](https://x.com/mahal0z) (or BlueSky), where announcements for a new decompilation workshop may come.
+Additionally, if you have any smaller research in decompilers you think is neat, consider following me on some social medai, where announcements for a new decompilation workshop may come.
 The conference to be co-located at is still being discussed, but I'm actively looking to gauge interest from the community.
 
-On that note, thank you for reading and joining me on this journey through decompilation.
+Thank you for reading and joining me on this journey through decompilation.
 Here's to 2024 and the exciting research to come in 2025!
