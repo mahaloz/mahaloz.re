@@ -3,7 +3,7 @@ title: "Decompiling 2024: A Year of Resurgance in Decompilation Research"
 layout: post
 tags: [research]
 permalink: /dec-progress-2024
-description: "The year 2024 was a resurgant year for decompilation. Academic publications from that year made up nearly 30% of all top publications ever made in decompilation. In this post, I do a summarization and retrospective of both the academic and ideological progress of decompilation in 2024."
+description: "The year 2024 was a resurgant year for decompilation. Academic publications from that year made up nearly 30% of all top publications ever made in decompilation. In this post, I do a summarization and retrospective of both the academic and ideological progress of decompilation in 2024. Hint: decompilation research is back. "
 toc: true
 ---
 
