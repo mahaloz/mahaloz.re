@@ -47,17 +47,18 @@ This is great news, but is field health just about quantity? What about quality?
 Well, let's take a closer look at three emerging trends from the **eight works** published in 2024.  
 
 ## Trend 1: Defining "Good" Decompilation
-Often, decompiler enthusiasts argue about what the "best" decompilation looks like, often with no good answer.
-Luckily, four of the eight new works measured and defined what good decompilation should look like.
+Often, decompiler enthusiasts argue about what the "best" decompilation looks like, primairly with no good answer.
+Luckily, **four of the eight** new works measured and defined what good decompilation should look like.
 These studies were both automated and human-driven and often defined new ways to improve decompilation for the future.
 Take, for instance, the work from [Dramko et al.](https://se-phd.s3d.cmu.edu/People/students/student-bios/dramko-luke.html) on studying ["Decompiler Fidelity Issues"](https://www.usenix.org/conference/usenixsecurity24/presentation/dramko), pictured below.  
 
 ![](/assets/images/dec-recap-24/dramko_paper.png)  
 
 His work took the gracious time to define what exactly is wrong with decompilation manually.
-To the savvy decompiler user, this may seem like a well-known problem. However, this work establishes a precedent: **good decompilation looks like a source**.
+To the savvy decompiler user, this may seem like a grouping of well-known problems.
+However, this work establishes a precedent: **good decompilation looks like its source**.
 Interestingly, this work's claim coincides with work published simultaneously, [SAILR](https://www.usenix.org/system/files/sec23winter-prepub-301-basque.pdf) (my work).
-SAILR, extended this manual effort by introducing an automated algorithm for [finding mismatches in source and decompilation](https://github.com/mahaloz/sailr-eval) and improving decompilation.
+SAILR, extended this manual effort by introducing an automated algorithm for [finding mismatches in source and decompilation](https://github.com/mahaloz/sailr-eval) and improving those locations, which may find itself [in Ghidra soon](https://github.com/NationalSecurityAgency/ghidra/issues/6133).
 Both work towards making decompilation like source.
   
 On the other end of the spectrum, one work, [R2I](https://dl.acm.org/doi/10.1145/3643744), defined good decompilation as being _simple_, much like previous work.
@@ -69,9 +70,9 @@ To keep count, **2** vote source code recovery, **1** vote simple code recovery,
 These works open the door for continued development and publication in decompilation research.  
 
 ## Trend 2: AIxDecompilation is Here to Stay
-If you've ever talked to me in person, you'd know that I'm a big disbeliever of AI replacing decompilers any time soon.
+If you've ever talked to me in person, you'd know that I'm a disbeliever of AI replacing decompilers any time soon.
 However, 2024 research has made it clear that AI has a real place in improving _specific_ tasks in decompilation.
-There were four works utilizing AI in 2024, working on symbol prediction, type prediction, and overall code simplification.
+There were **four works utilizing AI in 2024**, working on symbol prediction, type prediction, and overall code simplification.
 
 LLMs made their debut in decompilation in two works: [DeGPT](https://www.ndss-symposium.org/wp-content/uploads/2024-401-paper.pdf) and [ReSym](https://www.cs.purdue.edu/homes/lintan/publications/resym-ccs24.pdf).
 Both utilized LLMs to recover variable names, structures, types, and, in the case of DeGPT, code simplification (though very limited).
@@ -90,8 +91,8 @@ I think it will only get better from here.
 I often feel that industry looks down on academia because we frequently have unusable inventions and theories.
 Being a mainly applied science, decompilation _must_ be the exception to these expectations, and luckily, it was in 2024.
 
-In all but 1 of the works, each paper came with an open-source implementation.
-Many of those implementations had working tools that could be integrated into real-world decompilers and techniques.
+In all but 1, each 2024 paper came with an open-source implementation.
+Many of those implementations had [working](https://github.com/mahaloz/angr-sailr) [tools](https://github.com/binsync/varbert_api) [that](https://github.com/lt-asset/resym) [could](https://github.com/purseclab/D-helix) [be](https://github.com/PeiweiHu/DeGPT) [integrated](https://github.com/sefcom/TYGR) [into](https://github.com/e0mh4/R2I) real-world decompilers and techniques.
 Considering that back in 2011, none of the decompilation works were open-source, this is a massive step in the right direction.
 
 This trend allows the industry to gain usefulness from work in decompilation research more rapidly, making it more valuable.
