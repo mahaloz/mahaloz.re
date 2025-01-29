@@ -130,7 +130,7 @@ I remain optimistic that it is only the beginning of the research that will come
 That also makes 2025 a spectacular year to ride the new excitement in the field and do great research, both from new and old researchers.
 
 If you are a rising expert (or a zany practitioner), I encourage you to contribute your knowledge to the [Decompilation Wiki](https://decompilation.wiki/) so it may continue to organize and guide the field.
-Additionally, if you have any smaller research in decompilers you think is neat, consider following me on some social medai, where announcements for a new decompilation workshop may come.
+Additionally, if you have any smaller research in decompilers you think is neat, consider following me on some social media, where announcements for a new decompilation workshop may come.
 The conference to be co-located at is still being discussed, but I'm actively looking to gauge interest from the community.
 
 Thank you for reading and joining me on this journey through decompilation.
