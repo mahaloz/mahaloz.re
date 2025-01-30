@@ -47,7 +47,7 @@ This is great news, but is field health just about quantity? What about quality?
 Well, let's take a closer look at three emerging trends from the **eight works** published in 2024.  
 
 ## Trend 1: Defining "Good" Decompilation
-Often, decompiler enthusiasts argue about what the "best" decompilation looks like, primairly with no good answer.
+Often, decompiler enthusiasts argue about what the "best" decompilation looks like, primarily with no good answer.
 Luckily, **four of the eight** new works measured and defined what good decompilation should look like.
 These studies were both automated and human-driven and often defined new ways to improve decompilation for the future.
 Take, for instance, the work from [Dramko et al.](https://se-phd.s3d.cmu.edu/People/students/student-bios/dramko-luke.html) on studying ["Decompiler Fidelity Issues"](https://www.usenix.org/conference/usenixsecurity24/presentation/dramko), pictured below.  
