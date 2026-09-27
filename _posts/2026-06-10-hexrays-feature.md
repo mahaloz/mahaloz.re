@@ -47,7 +47,8 @@ Wrap all of this in a fancy GUI that works on all decompilers, and we were rolli
 
 Since every atom of information learned was a commit in BinSync, it also created a cool historical way to view team progress.
 Here is what one DEF CON Quals looked like by commit, with annotations indicating when a challenge was solved. If you look closely, you can see when the team was sleeping.
-![alt text](image.png)
+
+![alt text](/assets/images/binsync_commits.png)
 
 Before long, BinSync created a way for our team to share information rapidly, but the more interesting thing it created was shared reversing memory.
 As we ([myself](https://www.zionbasque.com/), [Shellphish](https://x.com/shellphish), and [SEFCOM](https://sefcom.asu.edu/)) continued to refine it, more teams began to adopt it in some form.
