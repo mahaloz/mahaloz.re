@@ -18,7 +18,7 @@ There, I started my research that focuses on autonomous hacking, reverse enginee
 
 <!-- small, centered image --> 
 <p align="center">
-  <imd src="https://www.zionbasque.com/images/pic.jpg" width="40%"/>
+  <img src="https://www.zionbasque.com/images/pic.jpg" width="40%"/>
 </p>
 <!-- end non-markdown --> 
 
